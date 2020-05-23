@@ -1,7 +1,11 @@
 package com.delta.delta_os
 
+import android.content.ContentValues
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
+import com.hussein.startup.DbManager
 import kotlinx.android.synthetic.main.activity_cliente_edita.*
 import java.lang.Exception
 
@@ -10,26 +14,25 @@ class ClienteEditaActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cliente_edita)
-        var bundle:Bundle= intent.extras!!
-        try{
-            nomeText.setText(
-                bundle.getString("nome").toString()
-            )
-            cpfText.setText(
-                bundle.getString("cpf").toString()
-            )
-            enderecoText.setText(
-                bundle.getString("endereco").toString()
-            )
-            telefoneText.setText(
-                bundle.getString("telefone").toString()
-            )
-            emailText.setText(
-                bundle.getString("email").toString()
-            )
+      //  var bundle:Bundle= intent.extras!!
 
-        }catch (ex:Exception){
-            ex.printStackTrace()
-        }
+
+        salvarButton.setOnClickListener({
+            var dbManager= DbManager(this)
+
+            var values= ContentValues()
+            values.put("nome",nomeText.text.toString())
+            values.put("cpf",cpfText.text.toString())
+            values.put("endereco",enderecoText.text.toString())
+            values.put("telefone",telefoneText.text.toString())
+            values.put("email",emailText.text.toString())
+            val ID = dbManager.Insert(values)
+            Toast.makeText(this, " Cliente adicionado! ID ="+ID, Toast.LENGTH_LONG).show()
+
+
+            var intent=  Intent(this,MainActivity::class.java)
+
+            startActivity(intent)
+        })
     }
 }
