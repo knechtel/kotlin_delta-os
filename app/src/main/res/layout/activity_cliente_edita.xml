@@ -28,4 +28,40 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nomeText" />
+
+    <EditText
+        android:id="@+id/enderecoText"
+        android:layout_width="295dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="84dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="endereço"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nomeText" />
+
+    <EditText
+        android:id="@+id/telefoneText"
+        android:layout_width="295dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="136dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="telefone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nomeText" />
+
+    <EditText
+        android:id="@+id/emailText"
+        android:layout_width="295dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="192dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="email "
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nomeText" />
 </androidx.constraintlayout.widget.ConstraintLayout>

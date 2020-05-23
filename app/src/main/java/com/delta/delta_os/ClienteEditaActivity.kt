@@ -18,7 +18,15 @@ class ClienteEditaActivity : AppCompatActivity() {
             cpfText.setText(
                 bundle.getString("cpf").toString()
             )
-
+            enderecoText.setText(
+                bundle.getString("endereco").toString()
+            )
+            telefoneText.setText(
+                bundle.getString("telefone").toString()
+            )
+            emailText.setText(
+                bundle.getString("email").toString()
+            )
 
         }catch (ex:Exception){
             ex.printStackTrace()

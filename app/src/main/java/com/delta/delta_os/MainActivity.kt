@@ -60,6 +60,9 @@ class MainActivity : AppCompatActivity() {
         var intent=  Intent(this,ClienteEditaActivity::class.java)
         intent.putExtra("nome",cliente.nome)
         intent.putExtra("cpf",cliente.cpf)
+        intent.putExtra("endereco",cliente.endereco)
+        intent.putExtra("telefone",cliente.telefone)
+        intent.putExtra("email",cliente.email)
         startActivity(intent)
     }
 }
