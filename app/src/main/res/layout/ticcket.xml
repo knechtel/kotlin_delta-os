@@ -7,11 +7,11 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:background="@drawable/background_layout"
 
-        android:layout_height="wrap_content"
         android:layout_margin="3pt"
-        android:background="@color/gray"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <TextView
@@ -23,10 +23,10 @@
             android:textSize="18sp" />
 
         <TextView
+            android:paddingLeft="10pt"
             android:id="@+id/tvDes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="10pt"
             android:text="Pattern Generator  Create any pattern of your own - tiles, texture, skin, wallpaper, comic effect, website background and more.  Change any artwork of pattern you found into different flavors and call them your own." />
 
         <LinearLayout
@@ -47,18 +47,14 @@
                 android:layout_weight="1"
                 app:srcCompat="@drawable/ic_delete_black_24dp" />
 
-<!--            <ImageView-->
-<!--                android:id="@+id/ivEdit"-->
-<!--                android:layout_width="40pt"-->
-<!--                android:layout_height="20pt"-->
-<!--                android:layout_weight="1"-->
-<!--                app:srcCompat="@drawable/ic_mode_edit_black_24dp" />-->
             <ImageView
-                android:id="@+id/ivAdd"
+                android:id="@+id/ivEdit"
                 android:layout_width="40pt"
                 android:layout_height="20pt"
                 android:layout_weight="1"
-                app:srcCompat="@drawable/ic_note_add_black_24dp" />
+                app:srcCompat="@drawable/ic_mode_edit_black_24dp" />
+
+
         </LinearLayout>
 
     </LinearLayout>

@@ -58,7 +58,7 @@ class  DbManager{
     fun LoadQuery():ArrayList<Cliente>{
         var listCliente = ArrayList<Cliente>()
         val projections= arrayOf("ID","nome","cpf","endereco","telefone","email")
-        val cursor= sqlDB?.rawQuery("select * from cliente  ",null)
+        val cursor= sqlDB?.rawQuery("select * from Cliente  ",null)
 
         if (cursor != null) {
             if(cursor.moveToFirst()){
