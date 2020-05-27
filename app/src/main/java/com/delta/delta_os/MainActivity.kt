@@ -11,10 +11,12 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.Toast
 import com.delta.delta_os.bean.Cliente
-import com.hussein.startup.DbManager
+import com.delta.delta_os.bean.Session
+import com.delta.delta_os.db.DbManager
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.ticcket.view.*
 import kotlinx.android.synthetic.main.ticcket.view.ivEdit
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,19 +24,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        listCliente.add(
-            Cliente(
-                1, "Maiquel Knechtel123",
-                "016.379.480-42", "coca barcelos", "maiquelknechtel@gmail.com", "51-36612082"
-            )
-        )
-        listCliente.add(
-            Cliente(
-                2, "Micheli Knechtel",
-                "016.379.480-42", "coca barcelos", "maiquelknechtel@gmail.com", "51-36612082"
-            )
-        )
-        LoadQuery()
+
+      LoadQuery()
+     //   var myNotesAdapter = MyClienteAdapter(this, listCliente)
+          //   lvClientes.adapter = myNotesAdapter
 
 
     }
@@ -57,6 +50,12 @@ class MainActivity : AppCompatActivity() {
                     //Got to add paage
                     var intent = Intent(this, ClienteEditaActivity::class.java)
                     startActivity(intent)
+                }
+            }
+            when (item.itemId) {
+                R.id.addRefresh -> {
+                    //Got to add paage
+                    LoadQuery();
                 }
             }
         }
@@ -87,9 +86,13 @@ class MainActivity : AppCompatActivity() {
             var myView = layoutInflater.inflate(R.layout.ticcket, null)
             var myVCliente = listClienteAdapter[position]
             myView.tvTitle.text = myVCliente.nome;
-            myView.tvDes.text = myVCliente.cpf;
+            myView.tvDes.text = myVCliente.id.toString();
 
             myView.ivEdit.setOnClickListener(View.OnClickListener {
+                Session.Companion.idCliente = myVCliente.id?.toLong() ?:1;
+                var intent=  Intent(this.context,MainAparelhoActivity::class.java)
+
+                startActivity(intent)
                 Toast.makeText(this.context, " edit!", Toast.LENGTH_LONG).show()
             });
 

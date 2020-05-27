@@ -9,7 +9,10 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.Toast
 import com.delta.delta_os.bean.Aparelho
+import com.delta.delta_os.bean.Session
+import com.delta.delta_os.db.DbManager
 import kotlinx.android.synthetic.main.activity_main_aparelho.*
 import kotlinx.android.synthetic.main.ticcket.view.*
 import java.util.Date
@@ -22,13 +25,16 @@ class MainAparelhoActivity : AppCompatActivity() {
         listAparelho.add(
             Aparelho(1,"TVLCD","modelo","serial","pronto",3,
             "autorizado","NAO_GARANTIA","NAO_ENTREGUE","defeito",
-                 java.sql.Date( Date().getTime()), java.sql.Date( Date().getTime()),120.0
+                 "data", "dataSaida",120.0
 
             )
 
         )
-        println("print lista ++++++++++++")
-        println(listAparelho.size)
+        var dbManager = DbManager(this);
+        //var idCliente = savedInstanceState!!.getString("idCliente");
+        //var bundle :Bundle ?=intent.extras
+
+        listAparelho = dbManager.LoadQueryAparelhoByOS(Session.idCliente)
         var myNotesAdapter = MyAparelhoAdapter(this, listAparelho)
         lvAparelhos.adapter = myNotesAdapter
     }
@@ -43,8 +49,20 @@ class MainAparelhoActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.addNote -> {
                     //Got to add paage
-                    var intent = Intent(this, ClienteEditaActivity::class.java)
+                    var intent = Intent(this, CadastroAparelhoActivity::class.java)
                     startActivity(intent)
+                }
+                R.id.addRefresh -> {
+
+                    var dbManager = DbManager(this);
+                    listAparelho = dbManager.LoadQueryAparelhoByOS(Session.Companion.idCliente)
+                    var myNotesAdapter = MyAparelhoAdapter(this, listAparelho)
+                    lvAparelhos.adapter = myNotesAdapter
+                    Toast.makeText(
+                        this,
+                        "  ID = "+Session.Companion.idCliente ,
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
         }
@@ -65,7 +83,7 @@ class MainAparelhoActivity : AppCompatActivity() {
             var myView = layoutInflater.inflate(R.layout.ticcket, null)
             var myVCliente = listAparelhoAdapter[position]
             myView.tvTitle.text = myVCliente.nome;
-            myView.tvDes.text = myVCliente.autorizado
+            myView.tvDes.text = myVCliente.idCliente.toString();
 
             return myView;
         }

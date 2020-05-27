@@ -5,7 +5,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import com.hussein.startup.DbManager
+import com.delta.delta_os.bean.Session
+import com.delta.delta_os.db.DbManager
 import kotlinx.android.synthetic.main.activity_cliente_edita.*
 
 
@@ -28,9 +29,10 @@ class ClienteEditaActivity : AppCompatActivity() {
 
             Toast.makeText(this, " Cliente adicionado! ID ="+ID, Toast.LENGTH_LONG).show()
 
+            Session.Companion.idCliente = ID;
 
             var intent=  Intent(this,MainAparelhoActivity::class.java)
-
+            intent.putExtra("idCliente",ID);
             startActivity(intent)
         }
     }

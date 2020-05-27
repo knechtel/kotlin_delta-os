@@ -13,15 +13,15 @@ class Aparelho {
     var garantia:String?=null;
     var entregue:String?=null;
     var defeitoObs:String?=null;
-    var dataEntrada:Date?=null;
-    var dataSaida:Date?=null;
+    var dataEntrada:String?=null;
+    var dataSaida:String?=null;
     var valor:Double?=null;
 
     constructor(id:Int,nome:String,modelo:String,
                 serial:String,pronto:String,idCliente:Int,
                 autorizado:String,garantia:String,
                 entregue:String, defeitoObs:String,
-                dataEntrada:Date,dataSaida:Date,valor:Double
+                dataEntrada:String,dataSaida:String,valor:Double
     ){
         this.id=id;
         this.nome=nome;
