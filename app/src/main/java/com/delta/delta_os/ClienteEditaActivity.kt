@@ -15,6 +15,7 @@ class ClienteEditaActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cliente_edita)
+        this.setTitle("Cadastro de Cliente");
         salvarButton.setOnClickListener {
             var dbManager= DbManager(this)
             var values= ContentValues()

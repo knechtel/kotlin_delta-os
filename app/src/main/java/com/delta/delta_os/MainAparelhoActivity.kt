@@ -21,7 +21,9 @@ class MainAparelhoActivity : AppCompatActivity() {
     var listAparelho = ArrayList<Aparelho>();
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_main_aparelho)
+        this.setTitle("Aparelhos do cliente "+Session.idCliente);
         listAparelho.add(
             Aparelho(1,"TVLCD","modelo","serial","pronto",3,
             "autorizado","NAO_GARANTIA","NAO_ENTREGUE","defeito",
