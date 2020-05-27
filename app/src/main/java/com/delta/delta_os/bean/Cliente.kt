@@ -1,4 +1,4 @@
-package com.delta.delta_os
+package com.delta.delta_os.bean
 
 class Cliente{
     var id:Int?=null

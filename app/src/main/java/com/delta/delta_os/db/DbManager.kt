@@ -7,8 +7,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.database.sqlite.SQLiteQueryBuilder
 import android.widget.Toast
-import com.delta.delta_os.Cliente
-import kotlinx.android.synthetic.main.activity_main.*
+import com.delta.delta_os.bean.Cliente
 
 
 class  DbManager{
@@ -21,6 +20,20 @@ class  DbManager{
     val colEndereco="endereco"
     val colTelefone="telefone"
     val colEmail="email"
+    val dbTableAparelho="Aparelho"
+    val idAparelho ="id"
+    val nomeAaparelho="nome"
+    val modelo = "modelo"
+    val serial = "serial"
+    val pronto = "pronto"
+    val idCliente = "idCliente"
+    val autorizado = "autorizado"
+    val garantia = "garantia"
+    val entregue = "entregue"
+    val defeito_obs = "defeito_obs"
+    val dataEntrada = "dataEntrada"
+    val dataSaida = "dataSaida"
+    val valor = "valor"
     val dbVersion=1
     //CREATE TABLE IF NOT EXISTS MyNotes (ID INTEGER PRIMARY KEY,title TEXT, Description TEXT);"
     val sqlCreateTable="CREATE TABLE IF NOT EXISTS "+ dbTable +" ("+ colID +" INTEGER PRIMARY KEY,"+
@@ -70,7 +83,16 @@ class  DbManager{
                     val endereco=cursor.getString(cursor.getColumnIndex("endereco"))
                     val telefone=cursor.getString(cursor.getColumnIndex("telefone"))
                     val email=cursor.getString(cursor.getColumnIndex("email"))
-                    listCliente.add( Cliente(ID,nome,cpf,endereco,telefone,email))
+                    listCliente.add(
+                        Cliente(
+                            ID,
+                            nome,
+                            cpf,
+                            endereco,
+                            telefone,
+                            email
+                        )
+                    )
 
                 }while (cursor.moveToNext())
             }

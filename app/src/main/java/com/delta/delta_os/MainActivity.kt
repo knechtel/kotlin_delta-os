@@ -1,9 +1,7 @@
 package com.delta.delta_os
 
-import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
-import android.database.sqlite.SQLiteDatabase
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -11,11 +9,10 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import android.widget.SearchView
 import android.widget.Toast
+import com.delta.delta_os.bean.Cliente
 import com.hussein.startup.DbManager
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.ticcket.*
 import kotlinx.android.synthetic.main.ticcket.view.*
 import kotlinx.android.synthetic.main.ticcket.view.ivEdit
 
@@ -41,6 +38,7 @@ class MainActivity : AppCompatActivity() {
 
 
     }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
 
         menuInflater.inflate(R.menu.main_menu, menu)
@@ -50,13 +48,14 @@ class MainActivity : AppCompatActivity() {
 
         return super.onCreateOptionsMenu(menu)
     }
+
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
 
         if (item != null) {
-            when(item.itemId){
-                R.id.addNote->{
+            when (item.itemId) {
+                R.id.addNote -> {
                     //Got to add paage
-                    var intent= Intent(this,ClienteEditaActivity::class.java)
+                    var intent = Intent(this, ClienteEditaActivity::class.java)
                     startActivity(intent)
                 }
             }
@@ -77,7 +76,7 @@ class MainActivity : AppCompatActivity() {
 
     inner class MyClienteAdapter : BaseAdapter {
         var listClienteAdapter = ArrayList<Cliente>();
-        var context: Context?=null
+        var context: Context? = null
 
         constructor (context: Context, listClienteAdapter: ArrayList<Cliente>) : super() {
             this.listClienteAdapter = listClienteAdapter;
@@ -90,17 +89,21 @@ class MainActivity : AppCompatActivity() {
             myView.tvTitle.text = myVCliente.nome;
             myView.tvDes.text = myVCliente.cpf;
 
+            myView.ivEdit.setOnClickListener(View.OnClickListener {
+                Toast.makeText(this.context, " edit!", Toast.LENGTH_LONG).show()
+            });
 
-//            myView.ivAdd.setOnClickListener(View.OnClickListener {
-//                GoToUpdate(myVCliente);
-//            })
             myView.ivDelete.setOnClickListener(View.OnClickListener {
-                Toast.makeText(this.context, " Cliente adicionado! ID = "+myVCliente.nome+" == "+myVCliente.id, Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    this.context,
+                    " Cliente deletado! ID = " + myVCliente.nome + " == " + myVCliente.id,
+                    Toast.LENGTH_LONG
+                ).show()
 
-//                var dbManager = DbManager(this.context!!)
-//                val selectionArgs = arrayOf(myVCliente.id.toString())
-//                dbManager.Delete("ID=?", selectionArgs)
-//                LoadQuery();
+                var dbManager = DbManager(this.context!!)
+                val selectionArgs = arrayOf(myVCliente.id.toString())
+                dbManager.Delete("ID=?", selectionArgs)
+                LoadQuery();
             })
             return myView
         }
