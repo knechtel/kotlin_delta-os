@@ -1,5 +1,6 @@
 package com.delta.delta_os
 
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.os.AsyncTask
@@ -30,9 +31,11 @@ import java.util.*
 class MainActivity : AppCompatActivity() {
 
     var listCliente = ArrayList<Cliente>();
+    var context:Context?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        Session.context=this
         LoadQuery()
         println("PASSEI AQUI")
         val call = RetrofitInitializer().noteService().getClientes()
@@ -42,8 +45,22 @@ class MainActivity : AppCompatActivity() {
                 response?.body()?.let {
                     val notes: List<Cliente> = it
                     //configureList(notes)
+                    notes.forEach{
 
-                    println(notes)
+                        var dbManager= DbManager(Session.context)
+                        var values= ContentValues()
+
+                        values.put("nome",it.nome)
+                        values.put("idServidor",it.id)
+                        values.put("cpf","cpf")
+                        values.put("endereco","endereco")
+                        values.put("telefone","telefone")
+                        values.put("email","email")
+
+                        val ID = dbManager.Insert(values)
+                    }
+
+                    println(" Size aqui ->  "+notes.size)
                 }
             }
 
@@ -108,7 +125,7 @@ class MainActivity : AppCompatActivity() {
             var myView = layoutInflater.inflate(R.layout.ticcket, null)
             var myVCliente = listClienteAdapter[position]
             myView.tvTitle.text = myVCliente.nome;
-            myView.tvDes.text = myVCliente.id.toString();
+            myView.tvDes.text = myVCliente.idServidor.toString()
 
             myView.ivEdit.setOnClickListener(View.OnClickListener {
                 Session.Companion.idCliente = myVCliente.id?.toLong() ?:1;

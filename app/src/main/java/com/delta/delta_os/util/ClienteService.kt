@@ -6,6 +6,6 @@ import retrofit2.Call
 import retrofit2.http.GET
 
 interface ClienteService {
-    @GET("listCliente")
+    @GET("list")
     fun getClientes(): Call<List<Cliente>>
 }

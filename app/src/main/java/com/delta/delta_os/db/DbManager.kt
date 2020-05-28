@@ -16,6 +16,7 @@ class  DbManager{
     val dbName="loja"
     val dbTable="Cliente"
     val colID="ID"
+    val colIdServidor="idServidor"
     val colNome="nome"
     val colCpf="cpf"
     val colEndereco="endereco"
@@ -35,9 +36,11 @@ class  DbManager{
     val dataEntrada = "dataEntrada"
     val dataSaida = "dataSaida"
     val valor = "valor"
-    val dbVersion=13
+    val dbVersion=17
     //CREATE TABLE IF NOT EXISTS MyNotes (ID INTEGER PRIMARY KEY,title TEXT, Description TEXT);"
     val sqlCreateTable="CREATE TABLE IF NOT EXISTS "+ dbTable +" ("+ colID +" INTEGER PRIMARY KEY AUTOINCREMENT, "+
+
+            colIdServidor+" INTEGER, "+
             colNome + " TEXT, " +
             colCpf + " TEXT, "+
             colEndereco + " TEXT, "+
@@ -71,7 +74,7 @@ class  DbManager{
     inner class  DatabaseHelperNotes:SQLiteOpenHelper{
          var context:Context?=null
 
-        constructor(context:Context):super(context,dbName,null,13){
+        constructor(context:Context):super(context,dbName,null,17){
             this.context=context
         }
         override fun onCreate(p0: SQLiteDatabase?) {
@@ -105,6 +108,7 @@ class  DbManager{
                     val endereco=cursor.getString(cursor.getColumnIndex("endereco"))
                     val telefone=cursor.getString(cursor.getColumnIndex("telefone"))
                     val email=cursor.getString(cursor.getColumnIndex("email"))
+                    val idServidor=cursor.getInt(cursor.getColumnIndex("idServidor"))
                     listCliente.add(
                         Cliente(
                             ID,
@@ -112,7 +116,8 @@ class  DbManager{
                             cpf,
                             endereco,
                             telefone,
-                            email
+                            email,
+                            idServidor
                         )
                     )
 
