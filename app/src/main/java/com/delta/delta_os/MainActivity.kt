@@ -2,20 +2,29 @@ package com.delta.delta_os
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.os.AsyncTask
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.delta.delta_os.bean.Cliente
 import com.delta.delta_os.bean.Session
 import com.delta.delta_os.db.DbManager
+import com.delta.delta_os.util.RetrofitInitializer
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.ticcket.view.*
-import kotlinx.android.synthetic.main.ticcket.view.ivEdit
+import retrofit2.Response
+
+import retrofit2.Call
+import retrofit2.Callback
+import java.io.BufferedReader
+import java.io.InputStream
+import java.io.InputStreamReader
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -24,21 +33,30 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        LoadQuery()
+        println("PASSEI AQUI")
+        val call = RetrofitInitializer().noteService().getClientes()
+        call.enqueue(object : Callback<List<Cliente>?> {
+            override fun onResponse(call: Call<List<Cliente>?>?,
+                                    response: Response<List<Cliente>?>?) {
+                response?.body()?.let {
+                    val notes: List<Cliente> = it
+                    //configureList(notes)
 
-      LoadQuery()
-     //   var myNotesAdapter = MyClienteAdapter(this, listCliente)
-          //   lvClientes.adapter = myNotesAdapter
+                    println(notes)
+                }
+            }
 
-
+            override fun onFailure(call: Call<List<Cliente>?>?, t: Throwable?) {
+                Log.e("onFailure error", t?.message)
+            }
+        })
     }
 
+
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-
         menuInflater.inflate(R.menu.main_menu, menu)
-
-
-
-
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -55,6 +73,7 @@ class MainActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.addRefresh -> {
                     //Got to add paage
+
                     LoadQuery();
                 }
             }
@@ -62,6 +81,8 @@ class MainActivity : AppCompatActivity() {
 
         return super.onOptionsItemSelected(item)
     }
+
+
 
     fun LoadQuery() {
 
@@ -80,6 +101,7 @@ class MainActivity : AppCompatActivity() {
         constructor (context: Context, listClienteAdapter: ArrayList<Cliente>) : super() {
             this.listClienteAdapter = listClienteAdapter;
             this.context = context
+
         }
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
@@ -135,4 +157,25 @@ class MainActivity : AppCompatActivity() {
 //        intent.putExtra("email",cliente.email)
         startActivity(intent)
     }
+    fun ConvertStreamToString(inputStream:InputStream):String{
+
+        val bufferReader=BufferedReader(InputStreamReader(inputStream))
+        var line:String
+        var AllString:String=""
+
+        try {
+            do{
+                line=bufferReader.readLine()
+                if(line!=null){
+                    AllString+=line
+                }
+            }while (line!=null)
+            inputStream.close()
+        }catch (ex:Exception){}
+
+
+
+        return AllString
+    }
+
 }

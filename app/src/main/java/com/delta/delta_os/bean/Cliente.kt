@@ -17,4 +17,7 @@ class Cliente{
         this.telefone=telefone;
 
     }
+    constructor(){
+
+    }
 }
