@@ -30,6 +30,7 @@ import java.io.BufferedReader
 import java.io.InputStream
 import java.io.InputStreamReader
 import java.util.*
+import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
 
@@ -63,8 +64,14 @@ class MainActivity : AppCompatActivity() {
                         values.put("endereco","endereco")
                         values.put("telefone","telefone")
                         values.put("email","email")
+                        var idc=it.id!!.toLong();
+                        var listOfCliente= dbManager.LoadQueryClienteByID(idc)
+                        if(listOfCliente!=null)
+                        if(listOfCliente.size<1){
+                            val ID = dbManager.Insert(values)
+                        }else{
 
-                        val ID = dbManager.Insert(values)
+                        }
                     }
 
                     println(" Size aqui ->  "+notes.size)
@@ -118,8 +125,13 @@ class MainActivity : AppCompatActivity() {
                         }else {
                             values.put("pronto", it.pronto)
                         }
+                        var ida = it.id!!.toLong()
+                        var listOfAparelho:List<Aparelho> =dbManager.LoadQueryAparelhoByOS(ida)
+                        if(listOfAparelho.size<1) {
+                            val ID = dbManager.InsertAparelho(values)
+                        }else{
 
-                        val ID = dbManager.InsertAparelho(values)
+                        }
                     }
 
                     println(" Size aqui ->  "+notes.size)
