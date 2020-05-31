@@ -23,11 +23,11 @@ class MainAparelhoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main_aparelho)
-        this.setTitle("Aparelhos do cliente "+Session.idCliente);
+        this.setTitle("Aparelhos  "+Session.idCliente);
         listAparelho.add(
             Aparelho(1,"TVLCD","modelo","serial","pronto",3,
             "autorizado","NAO_GARANTIA","NAO_ENTREGUE","defeito",
-                 "data", "dataSaida",120.0
+                 "data", "dataSaida",120.0,1
 
             )
 
@@ -36,7 +36,7 @@ class MainAparelhoActivity : AppCompatActivity() {
         //var idCliente = savedInstanceState!!.getString("idCliente");
         //var bundle :Bundle ?=intent.extras
 
-        listAparelho = dbManager.LoadQueryAparelhoByOS(Session.idCliente)
+        listAparelho = dbManager.LoadQueryAparelhoByOS(Session.Companion.idCliente)
         var myNotesAdapter = MyAparelhoAdapter(this, listAparelho)
         lvAparelhos.adapter = myNotesAdapter
     }
@@ -57,7 +57,7 @@ class MainAparelhoActivity : AppCompatActivity() {
                 R.id.addRefresh -> {
 
                     var dbManager = DbManager(this);
-                    listAparelho = dbManager.LoadQueryAparelhoByOS(Session.Companion.idCliente)
+                    listAparelho = dbManager.LoadQueryAparelho()
                     var myNotesAdapter = MyAparelhoAdapter(this, listAparelho)
                     lvAparelhos.adapter = myNotesAdapter
                     Toast.makeText(
@@ -85,7 +85,7 @@ class MainAparelhoActivity : AppCompatActivity() {
             var myView = layoutInflater.inflate(R.layout.ticcket, null)
             var myVCliente = listAparelhoAdapter[position]
             myView.tvTitle.text = myVCliente.nome;
-            myView.tvDes.text = myVCliente.idCliente.toString();
+            myView.tvDes.text = myVCliente.idServidor.toString();
 
             return myView;
         }

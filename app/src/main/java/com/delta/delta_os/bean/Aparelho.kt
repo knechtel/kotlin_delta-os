@@ -4,6 +4,7 @@ import java.sql.*
 
 class Aparelho {
     var id:Int?=null;
+    var idServidor:Int?=null;
     var nome:String?=null;
     var modelo:String?=null;
     var serial:String?=null;
@@ -21,7 +22,8 @@ class Aparelho {
                 serial:String,pronto:String,idCliente:Int,
                 autorizado:String,garantia:String,
                 entregue:String, defeitoObs:String,
-                dataEntrada:String,dataSaida:String,valor:Double
+                dataEntrada:String,dataSaida:String,valor:Double,
+                idServidor:Int
     ){
         this.id=id;
         this.nome=nome;
@@ -34,6 +36,8 @@ class Aparelho {
         this.entregue=entregue;
         this.defeitoObs=defeitoObs;
         this.dataEntrada=dataEntrada;
+        this.dataSaida=dataSaida
         this.valor=valor;
+        this.idServidor=idServidor;
     }
 }

@@ -24,6 +24,7 @@ class  DbManager{
     val colEmail="email"
     val dbTableAparelho="Aparelho"
     val idAparelho ="id"
+    val idServidor ="idServidor"
     val nomeAaparelho="nome"
     val modelo = "modelo"
     val serial = "serial"
@@ -36,7 +37,7 @@ class  DbManager{
     val dataEntrada = "dataEntrada"
     val dataSaida = "dataSaida"
     val valor = "valor"
-    val dbVersion=17
+    val dbVersion=24
     //CREATE TABLE IF NOT EXISTS MyNotes (ID INTEGER PRIMARY KEY,title TEXT, Description TEXT);"
     val sqlCreateTable="CREATE TABLE IF NOT EXISTS "+ dbTable +" ("+ colID +" INTEGER PRIMARY KEY AUTOINCREMENT, "+
 
@@ -54,6 +55,7 @@ class  DbManager{
             serial+" TEXT NULL, "+
             pronto+" TEXT NULL, "+
             idCliente+" INTEGER, "+
+            colIdServidor+" INTEGER, "+
             autorizado+" TEXT NULL, "+
             garantia+" TEXT NULL, "+
             entregue+" TEXT NULL, "+
@@ -74,7 +76,7 @@ class  DbManager{
     inner class  DatabaseHelperNotes:SQLiteOpenHelper{
          var context:Context?=null
 
-        constructor(context:Context):super(context,dbName,null,17){
+        constructor(context:Context):super(context,dbName,null,24){
             this.context=context
         }
         override fun onCreate(p0: SQLiteDatabase?) {
@@ -96,7 +98,7 @@ class  DbManager{
     fun LoadQuery():ArrayList<Cliente>{
         var listCliente = ArrayList<Cliente>()
         val projections= arrayOf("ID","nome","cpf","endereco","telefone","email")
-        val cursor= sqlDB?.rawQuery("select * from Cliente  ",null)
+        val cursor= sqlDB?.rawQuery("select * from Cliente order by  idServidor desc ",null)
 
         if (cursor != null) {
             if(cursor.moveToFirst()){
@@ -151,9 +153,10 @@ class  DbManager{
                     val dataEntrada="dataEntrada"//cursor.getString(cursor.getColumnIndex("dataEntrada"))
                    // val dataSaida=cursor.getString(cursor.getColumnIndex("dataSaida"))
                   //  val valor=cursor.getDouble(cursor.getColumnIndex("valor").toDouble().toInt())
+                    val idServidor = cursor.getInt(cursor.getColumnIndex("idServidor"))
                     listAparelho.add(
                       Aparelho(ID,nome,modelo,serial,pronto,idCliente,autorizado,garantia,entregue,defeito_obs,
-                      dataEntrada,"",8.0)
+                      dataEntrada,"",8.0,idServidor)
                     )
 
                 }while (cursor.moveToNext())
@@ -168,7 +171,7 @@ class  DbManager{
     fun LoadQueryAparelhoByOS(ID:Long):ArrayList<Aparelho>{
         var listAparelho = ArrayList<Aparelho>()
 
-        val cursor= sqlDB?.rawQuery("select * from Aparelho  where  idCliente = "+ID+" ;" ,null);
+        val cursor= sqlDB?.rawQuery("select * from Aparelho  where  idServidor = "+ID+" ;" ,null);
 
         if (cursor != null) {
             if(cursor.moveToFirst()){
@@ -187,9 +190,10 @@ class  DbManager{
                     val dataEntrada="dataEntrada"//cursor.getString(cursor.getColumnIndex("dataEntrada"))
                     // val dataSaida=cursor.getString(cursor.getColumnIndex("dataSaida"))
                     //  val valor=cursor.getDouble(cursor.getColumnIndex("valor").toDouble().toInt())
+                    val idServidor = cursor.getInt(cursor.getColumnIndex("idServidor"))
                     listAparelho.add(
                         Aparelho(ID,nome,modelo,serial,pronto,idCliente,autorizado,garantia,entregue,defeito_obs,
-                            dataEntrada,"",8.0)
+                            dataEntrada,"",8.0,idServidor)
                     )
 
                 }while (cursor.moveToNext())
@@ -228,6 +232,10 @@ class  DbManager{
 
         val ID= sqlDB!!.insert(dbTableAparelho,"",values)
         return ID
+    }
+
+    fun existsCliente(){
+
     }
 
 }

@@ -13,12 +13,15 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.delta.delta_os.bean.Aparelho
 import com.delta.delta_os.bean.Cliente
 import com.delta.delta_os.bean.Session
 import com.delta.delta_os.db.DbManager
 import com.delta.delta_os.util.RetrofitInitializer
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.ticcket.*
 import kotlinx.android.synthetic.main.ticcket.view.*
+import kotlinx.android.synthetic.main.ticcket.view.ivEdit
 import retrofit2.Response
 
 import retrofit2.Call
@@ -36,6 +39,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         Session.context=this
+
+
+
+
         LoadQuery()
         println("PASSEI AQUI")
         val call = RetrofitInitializer().noteService().getClientes()
@@ -65,6 +72,61 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<List<Cliente>?>?, t: Throwable?) {
+                Log.e("onFailure error", t?.message)
+            }
+        })
+
+        val callAparelho = RetrofitInitializer().noteService().getAparelho()
+        callAparelho.enqueue(object : Callback<List<Aparelho>?> {
+            override fun onResponse(call: Call<List<Aparelho>?>?,
+                                    response: Response<List<Aparelho>?>?) {
+                response?.body()?.let {
+                    val notes: List<Aparelho> = it
+                    //configureList(notes)
+                    notes.forEach{
+
+                        var dbManager= DbManager(Session.context)
+                        var values= ContentValues()
+
+                        if(it.nome===null) {
+                            values.put("nome", "semNome")
+                        }else{
+                            values.put("nome", it.nome)
+                        }
+                        if(it.modelo===null) {
+                            values.put("modelo", "semModelo")
+                        }else{
+                            values.put("modelo", it.modelo)
+                        }
+                        if(it.serial===null){
+                        values.put("serial","semserial")
+                        }else{
+                            values.put("serial",it.serial)
+                        }
+                        if(it.valor===null){
+                            values.put("valor",0.0);
+                        }else{
+                            values.put("valor",it.valor);
+                        }
+                        if(it.id===null){
+                            values.put("idServidor",0);
+                        }else{
+                        values.put("idServidor",it.idCliente);
+                        }
+                        if(it.pronto===null){
+                            values.put("pronto", "pronto")
+                        }else {
+                            values.put("pronto", it.pronto)
+                        }
+
+                        val ID = dbManager.InsertAparelho(values)
+                    }
+
+                    println(" Size aqui ->  "+notes.size)
+                }
+            }
+
+            override fun onFailure(call: Call<List<Aparelho>?>?, t: Throwable?) {
                 Log.e("onFailure error", t?.message)
             }
         })
@@ -128,11 +190,11 @@ class MainActivity : AppCompatActivity() {
             myView.tvDes.text = myVCliente.idServidor.toString()
 
             myView.ivEdit.setOnClickListener(View.OnClickListener {
-                Session.Companion.idCliente = myVCliente.id?.toLong() ?:1;
+                Session.Companion.idCliente = myVCliente.idServidor?.toLong() ?:1;
                 var intent=  Intent(this.context,MainAparelhoActivity::class.java)
 
                 startActivity(intent)
-                Toast.makeText(this.context, " edit!", Toast.LENGTH_LONG).show()
+                Toast.makeText(this.context, " edit! = "+Session.Companion.idCliente, Toast.LENGTH_LONG).show()
             });
 
             myView.ivDelete.setOnClickListener(View.OnClickListener {
