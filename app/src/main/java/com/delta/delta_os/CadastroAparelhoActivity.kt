@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.widget.Toast
 import com.delta.delta_os.bean.Session
 import com.delta.delta_os.db.DbManager
+import com.delta.delta_os.util.RetrofitInitializer
 import kotlinx.android.synthetic.main.activity_cadastro_aparelho.*
 
 
@@ -31,6 +32,8 @@ class CadastroAparelhoActivity : AppCompatActivity() {
             values.put("pronto","NAO_PRONTO")
             var ID = dbManager.InsertAparelho(values);
             Toast.makeText(this, "Aparelho inserido com sucesso!", Toast.LENGTH_LONG).show()
+
+
 
 
             var intent = Intent(this,MainAparelhoActivity::class.java)

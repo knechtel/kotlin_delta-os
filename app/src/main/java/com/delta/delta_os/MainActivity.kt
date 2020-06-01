@@ -126,15 +126,25 @@ class MainActivity : AppCompatActivity() {
                             values.put("pronto", it.pronto)
                         }
                         var ida = it.id!!.toLong()
-                        var listOfAparelho:List<Aparelho> =dbManager.LoadQueryAparelhoByOS(ida)
+                        var dbManagerSelect = DbManager(Session.context)
+
+
+                        var listOfAparelho:List<Aparelho> = dbManagerSelect.LoadQueryAparelhoByIdCliente(it.idCliente!!.toLong())
                         if(listOfAparelho.size<1) {
                             val ID = dbManager.InsertAparelho(values)
+                            println("menor que um "+listOfAparelho.size)
+
+                            println("Aparelho : "+it.nome);
+                            println("Aparelho id : "+ida);
+                            println("Aparelho idServidor : "+it.idCliente);
+                            println("Valor importante: -----")
+                            println("valor = "+listOfAparelho.size)
                         }else{
 
                         }
                     }
 
-                    println(" Size aqui ->  "+notes.size)
+                    //println(" Size aqui ->  "+notes.size)
                 }
             }
 
@@ -164,7 +174,27 @@ class MainActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.addRefresh -> {
                     //Got to add paage
+                    var dbManager = DbManager(this)
+                    var list = dbManager.LoadQueryClienteByIDServidorZero(0)
+                    val call = RetrofitInitializer().noteService().addCliente(list).enqueue(
+                        object : Callback<List<Cliente>?> {
+                            override fun onResponse(call: Call<List<Cliente>?>?,
+                                                    response: Response<List<Cliente>?>?) {
+                                response?.body()?.let {
+                                    if(response.isSuccessful){
 
+                                    }else {
+                                        println("ERRO!")
+                                    }
+                                }
+                            }
+                            override fun onFailure(call: Call<List<Cliente>?>?, t: Throwable?) {
+                                Log.e("onFailure error", t?.message)
+                            }
+                        }
+                    )
+                    println("log de list -----")
+                    println(list.size)
                     LoadQuery();
                 }
             }

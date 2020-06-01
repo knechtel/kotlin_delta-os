@@ -9,6 +9,7 @@ class Cliente{
     var email:String?=null;
     var telefone:String?=null;
 
+
     constructor(id:Int,nome:String,cpf:String,endereco:String,email:String,telefone:String,idServidor:Int){
         this.id=id;
         this.nome=nome;

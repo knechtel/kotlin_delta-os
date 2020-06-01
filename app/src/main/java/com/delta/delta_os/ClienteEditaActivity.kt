@@ -25,7 +25,7 @@ class ClienteEditaActivity : AppCompatActivity() {
             values.put("endereco",enderecoText.text.toString())
             values.put("telefone",telefoneText.text.toString())
             values.put("email",emailText.text.toString())
-
+            values.put("idServidor",0);
             val ID = dbManager.Insert(values)
 
             Toast.makeText(this, " Cliente adicionado! ID ="+ID, Toast.LENGTH_LONG).show()
