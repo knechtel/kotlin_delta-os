@@ -35,11 +35,11 @@ import kotlin.collections.ArrayList
 class MainActivity : AppCompatActivity() {
 
     var listCliente = ArrayList<Cliente>();
-    var context:Context?=null
+    var context: Context? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        Session.context=this
+        Session.context = this
 
 
 
@@ -48,33 +48,36 @@ class MainActivity : AppCompatActivity() {
         println("PASSEI AQUI")
         val call = RetrofitInitializer().noteService().getClientes()
         call.enqueue(object : Callback<List<Cliente>?> {
-            override fun onResponse(call: Call<List<Cliente>?>?,
-                                    response: Response<List<Cliente>?>?) {
+            override fun onResponse(
+                call: Call<List<Cliente>?>?,
+                response: Response<List<Cliente>?>?
+            ) {
                 response?.body()?.let {
                     val notes: List<Cliente> = it
                     //configureList(notes)
-                    notes.forEach{
+                    notes.forEach {
 
-                        var dbManager= DbManager(Session.context)
-                        var values= ContentValues()
+                        var dbManager = DbManager(Session.context)
+                        var values = ContentValues()
 
-                        values.put("nome",it.nome)
-                        values.put("idServidor",it.id)
-                        values.put("cpf","cpf")
-                        values.put("endereco","endereco")
-                        values.put("telefone","telefone")
-                        values.put("email","email")
-                        var idc=it.id!!.toLong();
-                        var listOfCliente= dbManager.LoadQueryClienteByID(idc)
-                        if(listOfCliente!=null)
-                        if(listOfCliente.size<1){
-                            val ID = dbManager.Insert(values)
-                        }else{
+                        values.put("nome", it.nome)
+                        values.put("idServidor", it.id)
+                        values.put("cpf", "cpf")
+                        values.put("endereco", "endereco")
+                        values.put("telefone", "telefone")
+                        values.put("email", "email")
+                        var idc = it.id!!.toLong();
+                        var listOfCliente = dbManager.LoadQueryClienteByID(idc)
+                        if (listOfCliente != null) {
+                            if (listOfCliente.size < 1) {
+                                val ID = dbManager.Insert(values)
+                            } else {
 
+                            }
                         }
                     }
 
-                    println(" Size aqui ->  "+notes.size)
+                    println(" Size aqui ->  " + notes.size)
                 }
             }
 
@@ -85,61 +88,64 @@ class MainActivity : AppCompatActivity() {
 
         val callAparelho = RetrofitInitializer().noteService().getAparelho()
         callAparelho.enqueue(object : Callback<List<Aparelho>?> {
-            override fun onResponse(call: Call<List<Aparelho>?>?,
-                                    response: Response<List<Aparelho>?>?) {
+            override fun onResponse(
+                call: Call<List<Aparelho>?>?,
+                response: Response<List<Aparelho>?>?
+            ) {
                 response?.body()?.let {
                     val notes: List<Aparelho> = it
                     //configureList(notes)
-                    notes.forEach{
+                    notes.forEach {
 
-                        var dbManager= DbManager(Session.context)
-                        var values= ContentValues()
+                        var dbManager = DbManager(Session.context)
+                        var values = ContentValues()
 
-                        if(it.nome===null) {
+                        if (it.nome === null) {
                             values.put("nome", "semNome")
-                        }else{
+                        } else {
                             values.put("nome", it.nome)
                         }
-                        if(it.modelo===null) {
+                        if (it.modelo === null) {
                             values.put("modelo", "semModelo")
-                        }else{
+                        } else {
                             values.put("modelo", it.modelo)
                         }
-                        if(it.serial===null){
-                        values.put("serial","semserial")
-                        }else{
-                            values.put("serial",it.serial)
+                        if (it.serial === null) {
+                            values.put("serial", "semserial")
+                        } else {
+                            values.put("serial", it.serial)
                         }
-                        if(it.valor===null){
-                            values.put("valor",0.0);
-                        }else{
-                            values.put("valor",it.valor);
+                        if (it.valor === null) {
+                            values.put("valor", 0.0);
+                        } else {
+                            values.put("valor", it.valor);
                         }
-                        if(it.id===null){
-                            values.put("idServidor",0);
-                        }else{
-                        values.put("idServidor",it.idCliente);
+                        if (it.id === null) {
+                            values.put("idServidor", 0);
+                        } else {
+                            values.put("idServidor", it.idCliente);
                         }
-                        if(it.pronto===null){
+                        if (it.pronto === null) {
                             values.put("pronto", "pronto")
-                        }else {
+                        } else {
                             values.put("pronto", it.pronto)
                         }
                         var ida = it.id!!.toLong()
                         var dbManagerSelect = DbManager(Session.context)
 
 
-                        var listOfAparelho:List<Aparelho> = dbManagerSelect.LoadQueryAparelhoByIdCliente(it.idCliente!!.toLong())
-                        if(listOfAparelho.size<1) {
+                        var listOfAparelho: List<Aparelho> =
+                            dbManagerSelect.LoadQueryAparelhoByIdCliente(it.idCliente!!.toLong())
+                        if (listOfAparelho.size < 1) {
                             val ID = dbManager.InsertAparelho(values)
-                            println("menor que um "+listOfAparelho.size)
+                            println("menor que um " + listOfAparelho.size)
 
-                            println("Aparelho : "+it.nome);
-                            println("Aparelho id : "+ida);
-                            println("Aparelho idServidor : "+it.idCliente);
+                            println("Aparelho : " + it.nome);
+                            println("Aparelho id : " + ida);
+                            println("Aparelho idServidor : " + it.idCliente);
                             println("Valor importante: -----")
-                            println("valor = "+listOfAparelho.size)
-                        }else{
+                            println("valor = " + listOfAparelho.size)
+                        } else {
 
                         }
                     }
@@ -153,7 +159,6 @@ class MainActivity : AppCompatActivity() {
             }
         })
     }
-
 
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -178,31 +183,31 @@ class MainActivity : AppCompatActivity() {
                     var list = dbManager.LoadQueryClienteByIDServidorZero(0)
                     val call = RetrofitInitializer().noteService().addCliente(list).enqueue(
                         object : Callback<List<Cliente>?> {
-                            override fun onResponse(call: Call<List<Cliente>?>?,
-                                                    response: Response<List<Cliente>?>?) {
+                            override fun onResponse(
+                                call: Call<List<Cliente>?>?,
+                                response: Response<List<Cliente>?>?
+                            ) {
                                 response?.body()?.let {
-                                    if(response.isSuccessful){
-
-                                    }else {
-                                        println("ERRO!")
-                                    }
+                                    val notes: List<Cliente> = it;
+                                    println("1234567890-------------------------------------------")
+                                    println(it[0].id)
+                                    println(it[0].nome)
                                 }
                             }
+
                             override fun onFailure(call: Call<List<Cliente>?>?, t: Throwable?) {
                                 Log.e("onFailure error", t?.message)
                             }
                         }
                     )
-                    println("log de list -----")
-                    println(list.size)
                     LoadQuery();
                 }
             }
+            println("FIM ..")
         }
 
         return super.onOptionsItemSelected(item)
     }
-
 
 
     fun LoadQuery() {
@@ -232,11 +237,15 @@ class MainActivity : AppCompatActivity() {
             myView.tvDes.text = myVCliente.idServidor.toString()
 
             myView.ivEdit.setOnClickListener(View.OnClickListener {
-                Session.Companion.idCliente = myVCliente.idServidor?.toLong() ?:1;
-                var intent=  Intent(this.context,MainAparelhoActivity::class.java)
+                Session.Companion.idCliente = myVCliente.idServidor?.toLong() ?: 1;
+                var intent = Intent(this.context, MainAparelhoActivity::class.java)
 
                 startActivity(intent)
-                Toast.makeText(this.context, " edit! = "+Session.Companion.idCliente, Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    this.context,
+                    " edit! = " + Session.Companion.idCliente,
+                    Toast.LENGTH_LONG
+                ).show()
             });
 
             myView.ivDelete.setOnClickListener(View.OnClickListener {
@@ -278,21 +287,23 @@ class MainActivity : AppCompatActivity() {
 //        intent.putExtra("email",cliente.email)
         startActivity(intent)
     }
-    fun ConvertStreamToString(inputStream:InputStream):String{
 
-        val bufferReader=BufferedReader(InputStreamReader(inputStream))
-        var line:String
-        var AllString:String=""
+    fun ConvertStreamToString(inputStream: InputStream): String {
+
+        val bufferReader = BufferedReader(InputStreamReader(inputStream))
+        var line: String
+        var AllString: String = ""
 
         try {
-            do{
-                line=bufferReader.readLine()
-                if(line!=null){
-                    AllString+=line
+            do {
+                line = bufferReader.readLine()
+                if (line != null) {
+                    AllString += line
                 }
-            }while (line!=null)
+            } while (line != null)
             inputStream.close()
-        }catch (ex:Exception){}
+        } catch (ex: Exception) {
+        }
 
 
 

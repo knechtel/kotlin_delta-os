@@ -37,7 +37,7 @@ class  DbManager{
     val dataEntrada = "dataEntrada"
     val dataSaida = "dataSaida"
     val valor = "valor"
-    val dbVersion=26
+    val dbVersion=27
     //CREATE TABLE IF NOT EXISTS MyNotes (ID INTEGER PRIMARY KEY,title TEXT, Description TEXT);"
     val sqlCreateTable="CREATE TABLE IF NOT EXISTS "+ dbTable +" ("+ colID +" INTEGER PRIMARY KEY AUTOINCREMENT, "+
 
@@ -76,7 +76,7 @@ class  DbManager{
     inner class  DatabaseHelperNotes:SQLiteOpenHelper{
          var context:Context?=null
 
-        constructor(context:Context):super(context,dbName,null,26){
+        constructor(context:Context):super(context,dbName,null,27){
             this.context=context
         }
         override fun onCreate(p0: SQLiteDatabase?) {
@@ -343,7 +343,11 @@ class  DbManager{
 
     }
 
+    fun updateCliente(values:ContentValues){
 
+        val count=sqlDB!!.update(dbTable,values,"ID"+"=?",null);
+        sqlDB?.close()
+    }
 
 }
 
