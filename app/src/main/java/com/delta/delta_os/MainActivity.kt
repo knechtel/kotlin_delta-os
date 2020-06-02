@@ -188,18 +188,9 @@ class MainActivity : AppCompatActivity() {
                                 response: Response<List<Cliente>?>?
                             ) {
                                 response?.body()?.let {
-                                    val notes: List<Cliente> = it;
-
-                                    notes.forEach{
-                                        println("__________________123456")
-                                        var values = ContentValues()
-                                        values.put("nome", it.nome)
-                                        values.put("id",list[0].id)
-                                        values.put("idServidor", it.id)
-                                        values.put("cpf", "cpf")
-                                        values.put("endereco", "endereco")
-                                        values.put("telefone", "telefone")
-                                        values.put("email", "email")
+                                    val listClienteSync: List<Cliente> = it;
+                                    
+                                    listClienteSync.forEach{
                                         var dbManagerSelect = DbManager(Session.context)
 
                                         dbManagerSelect.updateCliente(it.id!!.toLong(),list[0].id!!.toLong())
