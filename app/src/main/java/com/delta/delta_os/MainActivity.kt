@@ -191,9 +191,12 @@ class MainActivity : AppCompatActivity() {
                                     val listClienteSync: List<Cliente> = it;
                                     
                                     listClienteSync.forEach{
-                                        var dbManagerSelect = DbManager(Session.context)
 
-                                        dbManagerSelect.updateCliente(it.id!!.toLong(),list[0].id!!.toLong())
+                                       list.forEach({clienteAux ->
+                                           var dbManagerSelect = DbManager(Session.context)
+                                           dbManagerSelect.updateCliente(it.id!!.toLong(),clienteAux.id!!.toLong())
+
+                                       })
                                         Toast.makeText(
                                             Session.context,
                                             " id Servidor = " + it.id+" id = "+list[0].id,
