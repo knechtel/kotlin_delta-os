@@ -189,9 +189,27 @@ class MainActivity : AppCompatActivity() {
                             ) {
                                 response?.body()?.let {
                                     val notes: List<Cliente> = it;
-                                    println("1234567890-------------------------------------------")
-                                    println(it[0].id)
-                                    println(it[0].nome)
+
+                                    notes.forEach{
+                                        println("__________________123456")
+                                        var values = ContentValues()
+                                        values.put("nome", it.nome)
+                                        values.put("id",list[0].id)
+                                        values.put("idServidor", it.id)
+                                        values.put("cpf", "cpf")
+                                        values.put("endereco", "endereco")
+                                        values.put("telefone", "telefone")
+                                        values.put("email", "email")
+                                        var dbManagerSelect = DbManager(Session.context)
+
+                                        dbManagerSelect.updateCliente(it.id!!.toLong(),list[0].id!!.toLong())
+                                        Toast.makeText(
+                                            Session.context,
+                                            " id Servidor = " + it.id+" id = "+list[0].id,
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                    }
+
                                 }
                             }
 

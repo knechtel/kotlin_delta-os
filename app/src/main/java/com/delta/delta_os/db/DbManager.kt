@@ -343,9 +343,9 @@ class  DbManager{
 
     }
 
-    fun updateCliente(values:ContentValues){
+    fun updateCliente(idServidor: Long,id:Long){
 
-        val count=sqlDB!!.update(dbTable,values,"ID"+"=?",null);
+        val count=sqlDB!!.execSQL("update Cliente set idServidor = " +idServidor +" where id = "+id );
         sqlDB?.close()
     }
 
