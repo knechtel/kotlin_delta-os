@@ -40,6 +40,7 @@ class Aparelho {
         this.valor=valor;
         this.idServidor=idServidor;
     }
+    constructor(){}
 
     //func dtoToBean():Aparelho
 }
