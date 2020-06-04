@@ -9,5 +9,7 @@ class Session {
         @JvmStatic
         lateinit  // <-- notice the @JvmStatic annotation
         var context:Context;
+        @JvmStatic
+        var idLocal:Int = 199;
     }
 }

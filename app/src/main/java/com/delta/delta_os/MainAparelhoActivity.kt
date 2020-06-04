@@ -13,6 +13,8 @@ import android.widget.Toast
 import com.delta.delta_os.bean.Aparelho
 import com.delta.delta_os.bean.Session
 import com.delta.delta_os.db.DbManager
+import com.delta.delta_os.editAparelho.EditAparelhoActivity
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main_aparelho.*
 import kotlinx.android.synthetic.main.ticcket.view.*
 import java.util.Date
@@ -90,7 +92,10 @@ class MainAparelhoActivity : AppCompatActivity() {
 
 
             myView.ivEdit.setOnClickListener({
-
+                var intent = Intent(this.context, EditAparelhoActivity::class.java)
+//              intent.putExtra("idLocal",myVCliente.id)
+                Session.idLocal = myVCliente.id!!.toInt()
+                startActivity(intent)
             })
 
             return myView;
