@@ -37,7 +37,7 @@ class  DbManager{
     val dataEntrada = "dataEntrada"
     val dataSaida = "dataSaida"
     val valor = "valor"
-    val dbVersion=27
+    val dbVersion=34
     //CREATE TABLE IF NOT EXISTS MyNotes (ID INTEGER PRIMARY KEY,title TEXT, Description TEXT);"
     val sqlCreateTable="CREATE TABLE IF NOT EXISTS "+ dbTable +" ("+ colID +" INTEGER PRIMARY KEY AUTOINCREMENT, "+
 
@@ -49,7 +49,7 @@ class  DbManager{
             " "+ colEmail +" TEXT);"
     val sqlCreateTable2 =
     " CREATE TABLE IF NOT EXISTS "+dbTableAparelho+" ("+
-            idAparelho+" INTEGER PRYMARY KEY, "+
+            idAparelho+" INTEGER PRIMARY KEY AUTOINCREMENT, "+
             nomeAaparelho+" TEXT NULL, "+
             modelo+" TEXT NULL, "+
             serial+" TEXT NULL, "+
@@ -76,7 +76,7 @@ class  DbManager{
     inner class  DatabaseHelperNotes:SQLiteOpenHelper{
          var context:Context?=null
 
-        constructor(context:Context):super(context,dbName,null,27){
+        constructor(context:Context):super(context,dbName,null,34){
             this.context=context
         }
         override fun onCreate(p0: SQLiteDatabase?) {
@@ -171,7 +171,7 @@ class  DbManager{
     fun LoadQueryAparelhoByOS(ID:Long):ArrayList<Aparelho>{
         var listAparelho = ArrayList<Aparelho>()
 
-        val cursor= sqlDB?.rawQuery("select * from Aparelho  where  idServidor = "+ID+" ;" ,null);
+        val cursor= sqlDB?.rawQuery("select * from Aparelho  where  id = "+ID+" ;" ,null);
 
         if (cursor != null) {
             if(cursor.moveToFirst()){
@@ -348,6 +348,128 @@ class  DbManager{
         val count=sqlDB!!.execSQL("update Cliente set idServidor = " +idServidor +" where id = "+id );
         sqlDB?.close()
     }
+
+    fun LoadQueryAparelhoByIDServidorZero(idServidor:Long):ArrayList<Aparelho>{
+        var listAparelho = ArrayList<Aparelho>()
+
+        val cursor= sqlDB?.rawQuery("select * from Aparelho where  idServidor  = 0 ",null)
+
+        if (cursor != null) {
+            if(cursor.moveToFirst()){
+
+                do {
+                    var pronto = "";
+
+                        val ID = cursor.getInt(cursor.getColumnIndex("id"))
+                        val nome = cursor.getString(cursor.getColumnIndex("nome"))
+                        val modelo = cursor.getString(cursor.getColumnIndex("modelo"))
+                        val serial = cursor.getString(cursor.getColumnIndex("serial"))
+                        pronto = "pronto";
+                        val idCliente = cursor.getInt(cursor.getColumnIndex("idCliente"))
+                        val autorizado =
+                            "autorizado"//cursor.getString(cursor.getColumnIndex("autorizado"))
+                        val garantia =
+                            "NAO_GARANTIA"//cursor.getString(cursor.getColumnIndex("garantia"))
+                        val entregue =
+                            "NAO_ENTREGUE"//cursor.getString(cursor.getColumnIndex("entregue"))
+                        val defeito_obs =
+                            "OBS"//cursor.getString(cursor.getColumnIndex("defeito_obs"))
+                        val dataEntrada =
+                            "dataEntrada"//cursor.getString(cursor.getColumnIndex("dataEntrada"))
+                        // val dataSaida=cursor.getString(cursor.getColumnIndex("dataSaida"))
+                        //  val valor=cursor.getDouble(cursor.getColumnIndex("valor").toDouble().toInt())
+                        val idServidor = cursor.getInt(cursor.getColumnIndex("idServidor"))
+                        listAparelho.add(
+                            Aparelho(
+                                ID,
+                                nome,
+                                modelo,
+                                serial,
+                                pronto,
+                                idCliente,
+                                autorizado,
+                                garantia,
+                                entregue,
+                                defeito_obs,
+                                dataEntrada,
+                                "",
+                                8.0,
+                                idServidor
+                            )
+                        )
+
+                    } while (cursor.moveToNext())
+                }
+            }
+
+
+        cursor!!.close()
+        return listAparelho;
+    }
+
+    fun updateAparelho(idServidor: Long,id:Long){
+
+        val count=sqlDB!!.execSQL("update Aparelho set idServidor = " +idServidor +" where id = "+id );
+        sqlDB?.close()
+    }
+    fun selectAparelhoByCliente(id:Long):List<Aparelho>{
+        var list = ArrayList<Aparelho>()
+        val cursor=sqlDB!!.rawQuery("select * from Aparelho where idCliente = "+0+" " +
+                "and id = "+id,null );
+        if (cursor != null) {
+            if(cursor.moveToFirst()){
+
+                do {
+                    var pronto = "";
+
+                    val ID = cursor.getInt(cursor.getColumnIndex("id"))
+                    val nome = cursor.getString(cursor.getColumnIndex("nome"))
+                    val modelo = cursor.getString(cursor.getColumnIndex("modelo"))
+                    val serial = cursor.getString(cursor.getColumnIndex("serial"))
+                    pronto = "pronto";
+                    val idCliente = cursor.getInt(cursor.getColumnIndex("idCliente"))
+                    val autorizado =
+                        "autorizado"//cursor.getString(cursor.getColumnIndex("autorizado"))
+                    val garantia =
+                        "NAO_GARANTIA"//cursor.getString(cursor.getColumnIndex("garantia"))
+                    val entregue =
+                        "NAO_ENTREGUE"//cursor.getString(cursor.getColumnIndex("entregue"))
+                    val defeito_obs =
+                        "OBS"//cursor.getString(cursor.getColumnIndex("defeito_obs"))
+                    val dataEntrada =
+                        "dataEntrada"//cursor.getString(cursor.getColumnIndex("dataEntrada"))
+                    // val dataSaida=cursor.getString(cursor.getColumnIndex("dataSaida"))
+                    //  val valor=cursor.getDouble(cursor.getColumnIndex("valor").toDouble().toInt())
+                    val idServidor = cursor.getInt(cursor.getColumnIndex("idServidor"))
+                    list.add(
+                        Aparelho(
+                            ID,
+                            nome,
+                            modelo,
+                            serial,
+                            pronto,
+                            idCliente,
+                            autorizado,
+                            garantia,
+                            entregue,
+                            defeito_obs,
+                            dataEntrada,
+                            "",
+                            8.0,
+                            idServidor
+                        )
+                    )
+
+                } while (cursor.moveToNext())
+            }
+        }
+
+
+        cursor!!.close()
+
+        return list;
+    }
+
 
 }
 

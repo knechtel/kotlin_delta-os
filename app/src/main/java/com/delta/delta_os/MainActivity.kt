@@ -17,6 +17,8 @@ import com.delta.delta_os.bean.Aparelho
 import com.delta.delta_os.bean.Cliente
 import com.delta.delta_os.bean.Session
 import com.delta.delta_os.db.DbManager
+import com.delta.delta_os.service.AparelhoService
+import com.delta.delta_os.service.AparelhoServiceSync
 import com.delta.delta_os.util.RetrofitInitializer
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.ticcket.*
@@ -123,7 +125,7 @@ class MainActivity : AppCompatActivity() {
                         if (it.id === null) {
                             values.put("idServidor", 0);
                         } else {
-                            values.put("idServidor", it.idCliente);
+                            values.put("idServidor", it.id);
                         }
                         if (it.pronto === null) {
                             values.put("pronto", "pronto")
@@ -134,19 +136,18 @@ class MainActivity : AppCompatActivity() {
                         var dbManagerSelect = DbManager(Session.context)
 
 
-                        var listOfAparelho: List<Aparelho> =
-                            dbManagerSelect.LoadQueryAparelhoByIdCliente(it.idCliente!!.toLong())
-                        if (listOfAparelho.size < 1) {
-                            val ID = dbManager.InsertAparelho(values)
-                            println("menor que um " + listOfAparelho.size)
+                        if (it.idCliente != null) {
+                            if(it.idCliente!=0) {
+                                var listOfAparelho: List<Aparelho> =
+                                    dbManagerSelect.LoadQueryAparelhoByIdCliente(it.idCliente!!.toLong())
+                                if (listOfAparelho.size < 1) {
+                                    values.put("idCliente", it.idCliente)
+                                    val ID = dbManager.InsertAparelho(values)
 
-                            println("Aparelho : " + it.nome);
-                            println("Aparelho id : " + ida);
-                            println("Aparelho idServidor : " + it.idCliente);
-                            println("Valor importante: -----")
-                            println("valor = " + listOfAparelho.size)
-                        } else {
+                                } else {
 
+                                }
+                            }
                         }
                     }
 
@@ -189,17 +190,21 @@ class MainActivity : AppCompatActivity() {
                             ) {
                                 response?.body()?.let {
                                     val listClienteSync: List<Cliente> = it;
-                                    
-                                    listClienteSync.forEach{
 
-                                       list.forEach({clienteAux ->
-                                           var dbManagerSelect = DbManager(Session.context)
-                                           dbManagerSelect.updateCliente(it.id!!.toLong(),clienteAux.id!!.toLong())
+                                    listClienteSync.forEach {
 
-                                       })
+                                        list.forEach { clienteAux ->
+                                            var dbManagerSelect = DbManager(Session.context)
+                                            dbManagerSelect.updateCliente(
+                                                it.id!!.toLong(),
+                                                clienteAux.id!!.toLong()
+                                            )
+
+                                        }
+
                                         Toast.makeText(
                                             Session.context,
-                                            " id Servidor = " + it.id+" id = "+list[0].id,
+                                            "id Servidor = " + it.id + " id = " + list[0].id,
                                             Toast.LENGTH_LONG
                                         ).show()
                                     }
@@ -215,6 +220,11 @@ class MainActivity : AppCompatActivity() {
                     LoadQuery();
                 }
             }
+            var dbManagerAparelho = DbManager(Session.context)
+            var listAparelho: List<Aparelho>
+            var i = AparelhoServiceSync().atualizaAparelho()
+
+            //     println("valor de AparelhoServiceSync 12345 =  =  "+i.id.toString()+" nome"+i.nome)
             println("FIM ..")
         }
 
@@ -246,10 +256,13 @@ class MainActivity : AppCompatActivity() {
             var myView = layoutInflater.inflate(R.layout.ticcket, null)
             var myVCliente = listClienteAdapter[position]
             myView.tvTitle.text = myVCliente.nome;
-            myView.tvDes.text = myVCliente.idServidor.toString()
+            myView.tvDes.text = "id servidor: "+myVCliente.idServidor.toString() + "id local: " + myVCliente.id
+
+
+
 
             myView.ivEdit.setOnClickListener(View.OnClickListener {
-                Session.Companion.idCliente = myVCliente.idServidor?.toLong() ?: 1;
+                Session.Companion.idCliente = myVCliente.id?.toLong() ?: 199;
                 var intent = Intent(this.context, MainAparelhoActivity::class.java)
 
                 startActivity(intent)

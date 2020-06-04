@@ -1,6 +1,6 @@
 package com.delta.delta_os.bean
 
-import java.sql.*
+
 
 class Aparelho {
     var id:Int?=null;
@@ -40,4 +40,6 @@ class Aparelho {
         this.valor=valor;
         this.idServidor=idServidor;
     }
+
+    //func dtoToBean():Aparelho
 }

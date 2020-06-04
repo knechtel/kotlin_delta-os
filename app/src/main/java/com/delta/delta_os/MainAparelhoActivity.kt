@@ -36,7 +36,7 @@ class MainAparelhoActivity : AppCompatActivity() {
         //var idCliente = savedInstanceState!!.getString("idCliente");
         //var bundle :Bundle ?=intent.extras
 
-        listAparelho = dbManager.LoadQueryAparelhoByOS(Session.Companion.idCliente)
+        listAparelho = dbManager.LoadQueryAparelhoByOS(Session.idCliente)
         var myNotesAdapter = MyAparelhoAdapter(this, listAparelho)
         lvAparelhos.adapter = myNotesAdapter
     }
@@ -85,7 +85,13 @@ class MainAparelhoActivity : AppCompatActivity() {
             var myView = layoutInflater.inflate(R.layout.ticcket, null)
             var myVCliente = listAparelhoAdapter[position]
             myView.tvTitle.text = myVCliente.nome;
-            myView.tvDes.text = myVCliente.idServidor.toString();
+            myView.tvDes.text = "id local "+myVCliente.id.toString()+ " idServidor "+myVCliente.idServidor+
+            " idCliente "+myVCliente.idCliente;
+
+
+            myView.ivEdit.setOnClickListener({
+
+            })
 
             return myView;
         }

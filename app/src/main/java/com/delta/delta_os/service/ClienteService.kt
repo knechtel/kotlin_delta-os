@@ -1,4 +1,4 @@
-package com.delta.delta_os.util
+package com.delta.delta_os.service
 
 import com.delta.delta_os.bean.Aparelho
 import com.delta.delta_os.bean.Cliente
