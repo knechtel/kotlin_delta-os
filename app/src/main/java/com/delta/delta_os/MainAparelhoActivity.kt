@@ -38,7 +38,7 @@ class MainAparelhoActivity : AppCompatActivity() {
         //var idCliente = savedInstanceState!!.getString("idCliente");
         //var bundle :Bundle ?=intent.extras
 
-        listAparelho = dbManager.LoadQueryAparelhoByOS(Session.idCliente)
+        listAparelho = dbManager.LoadQueryAparelhoByOS(Session.idCliente.toLong())
         var myNotesAdapter = MyAparelhoAdapter(this, listAparelho)
         lvAparelhos.adapter = myNotesAdapter
     }

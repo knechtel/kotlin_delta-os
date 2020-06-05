@@ -2,14 +2,14 @@ package com.delta.delta_os
 
 import android.content.ContentValues
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.delta.delta_os.bean.Session
 import com.delta.delta_os.db.DbManager
-import com.delta.delta_os.util.RetrofitInitializer
+import com.delta.delta_os.util.Util
 import kotlinx.android.synthetic.main.activity_cadastro_aparelho.*
-
+import java.util.*
 
 
 class CadastroAparelhoActivity : AppCompatActivity() {
@@ -30,6 +30,8 @@ class CadastroAparelhoActivity : AppCompatActivity() {
             values.put("valor",valorText.text.toString().toDouble());
             values.put("idCliente",Session.idLocalCadAparelho);
             values.put("pronto","NAO_PRONTO")
+            val date = Util().getCurrentDateTime()
+            values.put("dataEntrada","2018/01/01")
             values.put("idServidor",0)
             var ID = dbManager.InsertAparelho(values);
             Toast.makeText(this, "Aparelho inserido com sucesso!", Toast.LENGTH_LONG).show()

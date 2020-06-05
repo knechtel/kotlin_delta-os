@@ -11,6 +11,8 @@ import com.delta.delta_os.bean.Cliente
 import com.delta.delta_os.bean.Session
 import com.delta.delta_os.db.DbManager
 import kotlinx.android.synthetic.main.activity_cliente_edit.*
+import kotlinx.android.synthetic.main.activity_cliente_edit.nomeText
+import kotlinx.android.synthetic.main.activity_edit_aparelho.*
 
 
 class ClienteActivityEdit : AppCompatActivity() {

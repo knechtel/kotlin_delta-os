@@ -37,7 +37,7 @@ class DbManager {
     val dataEntrada = "dataEntrada"
     val dataSaida = "dataSaida"
     val valor = "valor"
-    val dbVersion = 38
+    val dbVersion = 42
 
     //CREATE TABLE IF NOT EXISTS MyNotes (ID INTEGER PRIMARY KEY,title TEXT, Description TEXT);"
     val sqlCreateTable =
@@ -78,7 +78,7 @@ class DbManager {
     inner class DatabaseHelperNotes : SQLiteOpenHelper {
         var context: Context? = null
 
-        constructor(context: Context) : super(context, dbName, null, 38) {
+        constructor(context: Context) : super(context, dbName, null, 42) {
             this.context = context
         }
 
@@ -212,8 +212,14 @@ class DbManager {
                     val entregue =
                         "NAO_ENTREGUE"//cursor.getString(cursor.getColumnIndex("entregue"))
                     val defeito_obs = "OBS"//cursor.getString(cursor.getColumnIndex("defeito_obs"))
-                    val dataEntrada =
-                        "dataEntrada"//cursor.getString(cursor.getColumnIndex("dataEntrada"))
+                    //var dataEntrada = ""
+                    val dataEntrada = cursor.getString(cursor.getColumnIndex("dataEntrada"))
+                    //if (temp === null) {
+                    //    dataEntrada = "dataEntrada"
+                    //} else {
+                     //   val dataEntrada = temp
+                    //}
+
                     // val dataSaida=cursor.getString(cursor.getColumnIndex("dataSaida"))
                     //  val valor=cursor.getDouble(cursor.getColumnIndex("valor").toDouble().toInt())
                     val idServidor = cursor.getInt(cursor.getColumnIndex("idServidor"))
@@ -335,6 +341,7 @@ class DbManager {
     fun InsertAparelho(values: ContentValues): Long {
 
         val ID = sqlDB!!.insert(dbTableAparelho, "", values)
+        sqlDB!!.close();
         return ID
     }
 
@@ -545,9 +552,9 @@ class DbManager {
     }
 
 
-    fun updateAparelhoAllFields(aparelho: Aparelho):Int {
+    fun updateAparelhoAllFields(aparelho: Aparelho): Int {
 
-        val count = sqlDB!!.update(dbTableAparelho, toValues(aparelho),"id=?", toArgs(aparelho))
+        val count = sqlDB!!.update(dbTableAparelho, toValues(aparelho), "id=?", toArgs(aparelho))
 
 //        val count = sqlDB!!.execSQL(
 //            "update Aparelho set nome = " +"'" +aparelho.nome+"'" +
@@ -556,40 +563,43 @@ class DbManager {
 //                    ",  valor  = " + aparelho.valor +
 //                    "  where id = " + aparelho.id
 //        );
-        println("---------------------------------- : "+count)
-       // println(count.toString()+" -----")
+        println("---------------------------------- : " + count)
+        // println(count.toString()+" -----")
 
-       // sqlDB?.close()
+        // sqlDB?.close()
         return count
     }
-    fun  toValues( aparelho:Aparelho):ContentValues {
+
+    fun toValues(aparelho: Aparelho): ContentValues {
         var values = ContentValues();
         values.put("nome", aparelho.nome);
-        values.put("modelo",aparelho.modelo)
-        values.put("serial",aparelho.serial)
-        values.put("valor",aparelho.valor)
+        values.put("modelo", aparelho.modelo)
+        values.put("serial", aparelho.serial)
+        values.put("valor", aparelho.valor)
         return values;
     }
 
-    fun  toValuesCliente(cliente:Cliente):ContentValues {
+    fun toValuesCliente(cliente: Cliente): ContentValues {
         var values = ContentValues();
         values.put("nome", cliente.nome);
-        values.put("cpf",cliente.cpf)
-        values.put("endereco",cliente.endereco)
-        values.put("telefone",cliente.telefone)
-        values.put("email",cliente.email)
+        values.put("cpf", cliente.cpf)
+        values.put("endereco", cliente.endereco)
+        values.put("telefone", cliente.telefone)
+        values.put("email", cliente.email)
         return values;
     }
+
     private fun toArgs(aparelho: Aparelho): Array<String>? {
         return arrayOf(aparelho.id.toString())
     }
+
     private fun toArgs(cliente: Cliente): Array<String>? {
         return arrayOf(cliente.id.toString())
     }
 
-    fun updateClienteAllFields(cliente: Cliente):Int {
+    fun updateClienteAllFields(cliente: Cliente): Int {
 
-        val count = sqlDB!!.update(dbTable, toValuesCliente(cliente),"id=?", toArgs(cliente))
+        val count = sqlDB!!.update(dbTable, toValuesCliente(cliente), "id=?", toArgs(cliente))
 
 //        val count = sqlDB!!.execSQL(
 //            "update Aparelho set nome = " +"'" +aparelho.nome+"'" +
@@ -598,7 +608,7 @@ class DbManager {
 //                    ",  valor  = " + aparelho.valor +
 //                    "  where id = " + aparelho.id
 //        );
-        println("---------------------------------- : "+count)
+        println("---------------------------------- : " + count)
         // println(count.toString()+" -----")
 
         // sqlDB?.close()
@@ -608,7 +618,7 @@ class DbManager {
     fun LoadQueryClienteByIDLocal(id: Long): ArrayList<Cliente> {
         var listCliente = ArrayList<Cliente>()
 
-        val cursor = sqlDB?.rawQuery("select * from Cliente where  id =  "+id, null)
+        val cursor = sqlDB?.rawQuery("select * from Cliente where  id =  " + id, null)
 
         if (cursor != null) {
             if (cursor.moveToFirst()) {
@@ -645,7 +655,7 @@ class DbManager {
     fun LoadQueryClienteByIDServidor(idServidor: Long): ArrayList<Cliente> {
         var listCliente = ArrayList<Cliente>()
         val projections = arrayOf("ID", "nome", "cpf", "endereco", "telefone", "email")
-        val cursor = sqlDB?.rawQuery("select * from Cliente where idServidor = "+idServidor, null)
+        val cursor = sqlDB?.rawQuery("select * from Cliente where idServidor = " + idServidor, null)
 
         if (cursor != null) {
             if (cursor.moveToFirst()) {

@@ -17,11 +17,13 @@ import com.delta.delta_os.bean.Aparelho
 import com.delta.delta_os.bean.Cliente
 import com.delta.delta_os.bean.Session
 import com.delta.delta_os.db.DbManager
+import com.delta.delta_os.dto.AparelhoDto
 import com.delta.delta_os.editAparelho.EditAparelhoActivity
 import com.delta.delta_os.editCliente.IdClienteActivity
 import com.delta.delta_os.service.AparelhoService
 import com.delta.delta_os.service.AparelhoServiceSync
 import com.delta.delta_os.util.RetrofitInitializer
+import com.delta.delta_os.util.Util
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.ticcket.*
 import kotlinx.android.synthetic.main.ticcket.view.*
@@ -90,77 +92,84 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        val callAparelho = RetrofitInitializer().noteService().getAparelho()
-        callAparelho.enqueue(object : Callback<List<Aparelho>?> {
-            override fun onResponse(
-                call: Call<List<Aparelho>?>?,
-                response: Response<List<Aparelho>?>?
-            ) {
-                response?.body()?.let {
-                    val notes: List<Aparelho> = it
-                    //configureList(notes)
-                    notes.forEach {
+        val callAparelho = RetrofitInitializer().noteService().getAparelho().apply {
+            enqueue(object : Callback<List<AparelhoDto>?> {
+                override fun onResponse(
+                    call: Call<List<AparelhoDto>?>?,
+                    response: Response<List<AparelhoDto>?>?
+                ) {
+                    response?.body()?.let {
+                        val notes: List<AparelhoDto> = it
+                        //configureList(notes)
+                        notes.forEach {
 
-                        var dbManager = DbManager(Session.context)
-                        var values = ContentValues()
+                            var dbManager = DbManager(Session.context)
+                            var values = ContentValues()
 
-                        if (it.nome === null) {
-                            values.put("nome", "semNome")
-                        } else {
-                            values.put("nome", it.nome)
-                        }
-                        if (it.modelo === null) {
-                            values.put("modelo", "semModelo")
-                        } else {
-                            values.put("modelo", it.modelo)
-                        }
-                        if (it.serial === null) {
-                            values.put("serial", "semserial")
-                        } else {
-                            values.put("serial", it.serial)
-                        }
-                        if (it.valor === null) {
-                            values.put("valor", 0.0);
-                        } else {
-                            values.put("valor", it.valor);
-                        }
-                        if (it.id === null) {
-                            values.put("idServidor", 0);
-                        } else {
-                            values.put("idServidor", it.id);
-                        }
-                        if (it.pronto === null) {
-                            values.put("pronto", "pronto")
-                        } else {
-                            values.put("pronto", it.pronto)
-                        }
-                        var ida = it.id!!.toLong()
-                        var dbManagerSelect = DbManager(Session.context)
+                            if (it.nome === null) {
+                                values.put("nome", "semNome")
+                            } else {
+                                values.put("nome", it.nome)
+                            }
+                            if (it.modelo === null) {
+                                values.put("modelo", "semModelo")
+                            } else {
+                                values.put("modelo", it.modelo)
+                            }
+                            if (it.serial === null) {
+                                values.put("serial", "semserial")
+                            } else {
+                                values.put("serial", it.serial)
+                            }
+                            if (it.valor === null) {
+                                values.put("valor", 0.0);
+                            } else {
+                                values.put("valor", it.valor);
+                            }
+                            if (it.id === null) {
+                                values.put("idServidor", 0);
+                            } else {
+                                values.put("idServidor", it.id);
+                            }
+                            if (it.pronto === null) {
+                                values.put("pronto", "pronto")
+                            } else {
+                                values.put("pronto", it.pronto)
+                            }
+                            if(it.dataEntrada==null){
+                                values.put("dataEntrada", "null")
+                            }else{
+                                values.put("dataEntrada", Util().toSimpleString(it.dataEntrada!!))
+                            }
+                            var ida = it.id!!.toLong()
+                            var dbManagerSelect = DbManager(Session.context)
 
 
-                        if (it.idCliente != null) {
-                            if(it.idCliente!=0) {
-                                var listOfAparelho: List<Aparelho> =
-                                    dbManagerSelect.LoadQueryAparelhoByIdCliente(it.idCliente!!.toLong())
-                                if (listOfAparelho.size < 1) {
-                                    values.put("idCliente", it.idCliente)
-                                    val ID = dbManager.InsertAparelho(values)
+                            if (it.idCliente != null) {
+                                if(it.idCliente!=0) {
+                                    var listOfAparelho: List<Aparelho> =
+                                        dbManagerSelect.LoadQueryAparelhoByIdCliente(it.idCliente!!.toLong())
+                                    if (listOfAparelho.size < 1) {
+                                        values.put("idCliente", it.idCliente)
+                                        val ID = dbManager.InsertAparelho(values)
 
-                                } else {
-
+                                    } else if(listOfAparelho.size==1) {
+                                        println()
+                                        println("muita atençãp aqui ...")
+                                    }
                                 }
                             }
                         }
+
+                        //println(" Size aqui ->  "+notes.size)
                     }
-
-                    //println(" Size aqui ->  "+notes.size)
                 }
-            }
 
-            override fun onFailure(call: Call<List<Aparelho>?>?, t: Throwable?) {
-                Log.e("onFailure error", t?.message)
-            }
-        })
+                override fun onFailure(call: Call<List<AparelhoDto>?>?, t: Throwable?) {
+                    Log.e("onFailure error", t?.message)
+                }
+            })
+        }
     }
 
 

@@ -26,7 +26,7 @@ class EditAparelhoActivity : AppCompatActivity() {
         modeloText.setText(listAparelho[0].modelo)
         serialText.setText(listAparelho[0].serial)
         valorText.setText(listAparelho[0].valor.toString())
-
+        dataEntradaText.setText(listAparelho[0].dataEntrada)
 
         button.setOnClickListener {
             var aparelho = Aparelho()
