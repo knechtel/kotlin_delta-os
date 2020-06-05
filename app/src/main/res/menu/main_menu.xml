@@ -24,5 +24,11 @@
         android:icon="@drawable/baseline_post_add_black_18dp"
         android:title="visualizar"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/serch_os_id"
+
+        android:icon="@drawable/ic_search_black_24dp"
+        android:title="procura por os"
+        app:showAsAction="always" />
 
 </menu>
