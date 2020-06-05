@@ -37,7 +37,7 @@ class DbManager {
     val dataEntrada = "dataEntrada"
     val dataSaida = "dataSaida"
     val valor = "valor"
-    val dbVersion = 35
+    val dbVersion = 38
 
     //CREATE TABLE IF NOT EXISTS MyNotes (ID INTEGER PRIMARY KEY,title TEXT, Description TEXT);"
     val sqlCreateTable =
@@ -78,7 +78,7 @@ class DbManager {
     inner class DatabaseHelperNotes : SQLiteOpenHelper {
         var context: Context? = null
 
-        constructor(context: Context) : super(context, dbName, null, 35) {
+        constructor(context: Context) : super(context, dbName, null, 38) {
             this.context = context
         }
 
@@ -642,6 +642,42 @@ class DbManager {
 
     }
 
+    fun LoadQueryClienteByIDServidor(idServidor: Long): ArrayList<Cliente> {
+        var listCliente = ArrayList<Cliente>()
+        val projections = arrayOf("ID", "nome", "cpf", "endereco", "telefone", "email")
+        val cursor = sqlDB?.rawQuery("select * from Cliente where idServidor = "+idServidor, null)
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+
+                do {
+                    val ID = cursor.getInt(cursor.getColumnIndex("ID"))
+                    val nome = cursor.getString(cursor.getColumnIndex("nome"))
+                    val cpf = cursor.getString(cursor.getColumnIndex("cpf"))
+                    val endereco = cursor.getString(cursor.getColumnIndex("endereco"))
+                    val telefone = cursor.getString(cursor.getColumnIndex("telefone"))
+                    val email = cursor.getString(cursor.getColumnIndex("email"))
+                    val idServidor = cursor.getInt(cursor.getColumnIndex("idServidor"))
+                    listCliente.add(
+                        Cliente(
+                            ID,
+                            nome,
+                            cpf,
+                            endereco,
+                            telefone,
+                            email,
+                            idServidor
+                        )
+                    )
+
+                } while (cursor.moveToNext())
+            }
+        }
+        cursor!!.close()
+        return listCliente;
+
+
+    }
 }
 
 

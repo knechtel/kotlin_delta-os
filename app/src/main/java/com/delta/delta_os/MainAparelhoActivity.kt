@@ -87,8 +87,8 @@ class MainAparelhoActivity : AppCompatActivity() {
             var myView = layoutInflater.inflate(R.layout.ticcket, null)
             var myVCliente = listAparelhoAdapter[position]
             myView.tvTitle.text = myVCliente.nome;
-            myView.tvDes.text = "id local "+myVCliente.id.toString()+ " idServidor "+myVCliente.idServidor+
-            " idCliente "+myVCliente.idCliente;
+            myView.tvDes.text = "id local "+myVCliente.id.toString()+ "\nidServidor "+myVCliente.idServidor+
+            "\nidCliente "+myVCliente.idCliente;
 
 
             myView.ivEdit.setOnClickListener({

@@ -10,7 +10,7 @@
     <item
         android:id="@+id/addNote"
         android:icon="@drawable/ic_note_add_black_24dp"
-        android:title="Add Cliente"
+        android:title="Add cliente/aparelho"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/app_bar_search"

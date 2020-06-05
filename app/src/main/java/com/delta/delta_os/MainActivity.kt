@@ -66,12 +66,12 @@ class MainActivity : AppCompatActivity() {
 
                         values.put("nome", it.nome)
                         values.put("idServidor", it.id)
-                        values.put("cpf", "cpf")
-                        values.put("endereco", "endereco")
-                        values.put("telefone", "telefone")
-                        values.put("email", "email")
+                        values.put("cpf", it.cpf)
+                        values.put("endereco", it.endereco)
+                        values.put("telefone", it.telefone)
+                        values.put("email", it.email)
                         var idc = it.id!!.toLong();
-                        var listOfCliente = dbManager.LoadQueryClienteByID(idc)
+                        var listOfCliente = dbManager.LoadQueryClienteByIDServidor(idc)
                         if (listOfCliente != null) {
                             if (listOfCliente.size < 1) {
                                 val ID = dbManager.Insert(values)
@@ -264,7 +264,7 @@ class MainActivity : AppCompatActivity() {
             var myView = layoutInflater.inflate(R.layout.ticcket, null)
             var myVCliente = listClienteAdapter[position]
             myView.tvTitle.text = myVCliente.nome;
-            myView.tvDes.text = "id servidor: "+myVCliente.idServidor.toString() + "id local: " + myVCliente.id
+            myView.tvDes.text = "id servidor: "+myVCliente.idServidor.toString() + "\nid local: " + myVCliente.id
 
 
 

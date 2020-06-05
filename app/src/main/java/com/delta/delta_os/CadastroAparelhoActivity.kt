@@ -28,7 +28,7 @@ class CadastroAparelhoActivity : AppCompatActivity() {
 
             values.put("serial",serialText.text.toString())
             values.put("valor",valorText.text.toString().toDouble());
-            values.put("idCliente",Session.idCliente);
+            values.put("idCliente",Session.idLocalCadAparelho);
             values.put("pronto","NAO_PRONTO")
             values.put("idServidor",0)
             var ID = dbManager.InsertAparelho(values);

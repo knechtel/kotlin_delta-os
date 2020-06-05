@@ -11,5 +11,7 @@ class Session {
         var context:Context;
         @JvmStatic
         var idLocal:Int = 199;
+        @JvmStatic
+        var idLocalCadAparelho:Int = 199;
     }
 }

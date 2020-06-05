@@ -30,10 +30,10 @@ class ClienteEditaActivity : AppCompatActivity() {
 
             Toast.makeText(this, " Cliente adicionado! ID ="+ID, Toast.LENGTH_LONG).show()
 
-            Session.Companion.idCliente = ID;
+            Session.Companion.idLocalCadAparelho = ID.toInt();
 
             var intent=  Intent(this,MainAparelhoActivity::class.java)
-            intent.putExtra("idCliente",ID);
+           // intent.putExtra("idCliente",ID);
             startActivity(intent)
         }
     }
