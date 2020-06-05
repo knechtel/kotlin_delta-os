@@ -28,6 +28,7 @@ class EditAparelhoActivity : AppCompatActivity() {
         serialText.setText(listAparelho[0].serial)
         valorText.setText(listAparelho[0].valor.toString())
         dataEntradaText.setText("Data de Entrada - "+listAparelho[0].dataEntrada)
+        defeitoObsText.setText(listAparelho[0].defeitoObs)
         if(listAparelho[0].devolucao.toString().equals("NAO")){
             checkBoxDevolucao.isChecked=false
         }else{

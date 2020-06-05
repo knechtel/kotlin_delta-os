@@ -144,6 +144,7 @@ class MainActivity : AppCompatActivity() {
                             }
                             values.put("devolucao", it.devolucao)
                             values.put("entregue", it.entregue)
+                            values.put("defeito_obs",it.defeito_obs)
                             if (it.dataSaida != null)
                                 values.put("dataSaida", Util().toSimpleString(it.dataSaida!!))
                             var ida = it.id!!.toLong()

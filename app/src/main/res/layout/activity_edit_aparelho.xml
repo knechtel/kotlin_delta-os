@@ -77,6 +77,14 @@
             android:hint="Valor"
             android:inputType="textPersonName" />
 
+        <EditText
+            android:id="@+id/defeitoObsText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Defeito"
+            android:inputType="textPersonName" />
+
         <Button
             android:id="@+id/button"
             android:layout_width="match_parent"

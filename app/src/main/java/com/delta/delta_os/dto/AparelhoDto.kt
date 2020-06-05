@@ -14,7 +14,7 @@ class AparelhoDto {
     var autorizado:String?=null;
     var garantia:String?=null;
     var entregue:String?=null;
-    var defeitoObs:String?=null;
+    var defeito_obs:String?=null;
     var dataEntrada:Date?=null;
     var dataSaida: Date?=null;
     var valor:Double?=null;

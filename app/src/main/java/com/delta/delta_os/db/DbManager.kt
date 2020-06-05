@@ -38,7 +38,7 @@ class DbManager {
     val dataSaida = "dataSaida"
     val devolucao = "devolucao"
     val valor = "valor"
-    val dbVersion = 56
+    val dbVersion = 59
 
     //CREATE TABLE IF NOT EXISTS MyNotes (ID INTEGER PRIMARY KEY,title TEXT, Description TEXT);"
     val sqlCreateTable =
@@ -80,7 +80,7 @@ class DbManager {
     inner class DatabaseHelperNotes : SQLiteOpenHelper {
         var context: Context? = null
 
-        constructor(context: Context) : super(context, dbName, null, 56) {
+        constructor(context: Context) : super(context, dbName, null, 59) {
             this.context = context
         }
 
@@ -215,7 +215,7 @@ class DbManager {
                         "NAO_GARANTIA"//cursor.getString(cursor.getColumnIndex("garantia"))
                     val entregue =
                         cursor.getString(cursor.getColumnIndex("entregue"))
-                    val defeito_obs = "OBS"//cursor.getString(cursor.getColumnIndex("defeito_obs"))
+                    val defeito_obs = cursor.getString(cursor.getColumnIndex("defeito_obs"))
                     val dataEntrada = cursor.getString(cursor.getColumnIndex("dataEntrada"))
                     val dataSaida=cursor.getString(cursor.getColumnIndex("dataSaida"))
                     val valor=cursor.getDouble(cursor.getColumnIndex("valor"))
