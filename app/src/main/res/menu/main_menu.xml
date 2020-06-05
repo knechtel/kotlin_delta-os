@@ -5,18 +5,24 @@
     <item
         android:id="@+id/addRefresh"
         android:icon="@drawable/refresh_black_18dp"
-        android:title="Add"
+        android:title="atualizar"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/addNote"
         android:icon="@drawable/ic_note_add_black_24dp"
-        android:title="Add"
+        android:title="Add Cliente"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/app_bar_search"
 
         android:icon="@drawable/cloud_black_18dp"
         android:title="Search"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/edit_cliente"
+
+        android:icon="@drawable/baseline_post_add_black_18dp"
+        android:title="visualizar"
         app:showAsAction="always" />
 
 </menu>

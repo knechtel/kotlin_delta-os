@@ -17,6 +17,8 @@ import com.delta.delta_os.bean.Aparelho
 import com.delta.delta_os.bean.Cliente
 import com.delta.delta_os.bean.Session
 import com.delta.delta_os.db.DbManager
+import com.delta.delta_os.editAparelho.EditAparelhoActivity
+import com.delta.delta_os.editCliente.IdClienteActivity
 import com.delta.delta_os.service.AparelhoService
 import com.delta.delta_os.service.AparelhoServiceSync
 import com.delta.delta_os.util.RetrofitInitializer
@@ -226,6 +228,12 @@ class MainActivity : AppCompatActivity() {
 
             //     println("valor de AparelhoServiceSync 12345 =  =  "+i.id.toString()+" nome"+i.nome)
             println("FIM ..")
+            when (item.itemId) {
+                R.id.edit_cliente -> {
+                    var intent = Intent(this,IdClienteActivity::class.java)
+                    startActivity(intent)
+                }
+            }
         }
 
         return super.onOptionsItemSelected(item)

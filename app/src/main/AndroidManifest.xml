@@ -11,8 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".editCliente.ClienteActivityEdit"></activity>
-        <activity android:name=".editAparelho.EditAparelhoActivity"></activity>
+        <activity android:name=".editCliente.IdClienteActivity"></activity>
+        <activity android:name=".editCliente.ClienteActivityEdit" />
+        <activity android:name=".editAparelho.EditAparelhoActivity" />
         <activity android:name=".CadastroAparelhoActivity" />
         <activity android:name=".MainAparelhoActivity" />
         <activity android:name=".ClienteEditaActivity" />

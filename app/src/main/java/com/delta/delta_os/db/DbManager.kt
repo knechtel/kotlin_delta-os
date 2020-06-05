@@ -37,7 +37,7 @@ class DbManager {
     val dataEntrada = "dataEntrada"
     val dataSaida = "dataSaida"
     val valor = "valor"
-    val dbVersion = 34
+    val dbVersion = 35
 
     //CREATE TABLE IF NOT EXISTS MyNotes (ID INTEGER PRIMARY KEY,title TEXT, Description TEXT);"
     val sqlCreateTable =
@@ -78,7 +78,7 @@ class DbManager {
     inner class DatabaseHelperNotes : SQLiteOpenHelper {
         var context: Context? = null
 
-        constructor(context: Context) : super(context, dbName, null, 34) {
+        constructor(context: Context) : super(context, dbName, null, 35) {
             this.context = context
         }
 
@@ -571,9 +571,77 @@ class DbManager {
         return values;
     }
 
+    fun  toValuesCliente(cliente:Cliente):ContentValues {
+        var values = ContentValues();
+        values.put("nome", cliente.nome);
+        values.put("cpf",cliente.cpf)
+        values.put("endereco",cliente.endereco)
+        values.put("telefone",cliente.telefone)
+        values.put("email",cliente.email)
+        return values;
+    }
     private fun toArgs(aparelho: Aparelho): Array<String>? {
         return arrayOf(aparelho.id.toString())
     }
+    private fun toArgs(cliente: Cliente): Array<String>? {
+        return arrayOf(cliente.id.toString())
+    }
+
+    fun updateClienteAllFields(cliente: Cliente):Int {
+
+        val count = sqlDB!!.update(dbTable, toValuesCliente(cliente),"id=?", toArgs(cliente))
+
+//        val count = sqlDB!!.execSQL(
+//            "update Aparelho set nome = " +"'" +aparelho.nome+"'" +
+//                    ",  modelo = "+"'" + aparelho.modelo+"'" +
+//                    ",  serial = " +"'" +aparelho.serial +"'"+
+//                    ",  valor  = " + aparelho.valor +
+//                    "  where id = " + aparelho.id
+//        );
+        println("---------------------------------- : "+count)
+        // println(count.toString()+" -----")
+
+        // sqlDB?.close()
+        return count
+    }
+
+    fun LoadQueryClienteByIDLocal(id: Long): ArrayList<Cliente> {
+        var listCliente = ArrayList<Cliente>()
+
+        val cursor = sqlDB?.rawQuery("select * from Cliente where  id =  "+id, null)
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+
+                do {
+                    val ID = cursor.getInt(cursor.getColumnIndex("ID"))
+                    val nome = cursor.getString(cursor.getColumnIndex("nome"))
+                    val cpf = cursor.getString(cursor.getColumnIndex("cpf"))
+                    val endereco = cursor.getString(cursor.getColumnIndex("endereco"))
+                    val telefone = cursor.getString(cursor.getColumnIndex("telefone"))
+                    val email = cursor.getString(cursor.getColumnIndex("email"))
+                    val idServidor = cursor.getInt(cursor.getColumnIndex("idServidor"))
+                    listCliente.add(
+                        Cliente(
+                            ID,
+                            nome,
+                            cpf,
+                            endereco,
+                            telefone,
+                            email,
+                            idServidor
+                        )
+                    )
+
+                } while (cursor.moveToNext())
+            }
+        }
+        cursor!!.close()
+        return listCliente;
+
+
+    }
+
 }
 
 
