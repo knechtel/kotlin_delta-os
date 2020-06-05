@@ -22,12 +22,19 @@ class ClienteActivityEdit : AppCompatActivity() {
         setContentView(R.layout.activity_cliente_edit)
         var db = DbManager(this)
         var list  = db.LoadQueryClienteByIDLocal(Session.idLocal.toLong())
-        nomeText.setText(list[0].nome)
-        cpfText.setText(list[0].cpf)
-        enderecoText.setText(list[0].endereco)
-        telefoneText.setText(list[0].telefone);
-        emailText.setText(list[0].email)
 
+        if(list.size==1) {
+            nomeText.setText(list[0].nome)
+            cpfText.setText(list[0].cpf)
+            enderecoText.setText(list[0].endereco)
+            telefoneText.setText(list[0].telefone);
+            emailText.setText(list[0].email)
+        }else{
+            var intent = Intent(this,MainActivity::class.java)
+            startActivity(intent)
+
+            Toast.makeText(this, "Registro nao encontrado!", Toast.LENGTH_LONG).show()
+        }
 
         button2.setOnClickListener({
 

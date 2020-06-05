@@ -216,16 +216,9 @@ class DbManager {
                     val entregue =
                         cursor.getString(cursor.getColumnIndex("entregue"))
                     val defeito_obs = "OBS"//cursor.getString(cursor.getColumnIndex("defeito_obs"))
-                    //var dataEntrada = ""
                     val dataEntrada = cursor.getString(cursor.getColumnIndex("dataEntrada"))
-                    //if (temp === null) {
-                    //    dataEntrada = "dataEntrada"
-                    //} else {
-                     //   val dataEntrada = temp
-                    //}
-
-                     val dataSaida=cursor.getString(cursor.getColumnIndex("dataSaida"))
-                    //  val valor=cursor.getDouble(cursor.getColumnIndex("valor").toDouble().toInt())
+                    val dataSaida=cursor.getString(cursor.getColumnIndex("dataSaida"))
+                    val valor=cursor.getDouble(cursor.getColumnIndex("valor"))
                     val idServidor = cursor.getInt(cursor.getColumnIndex("idServidor"))
                     val devolucao =  cursor.getString(cursor.getColumnIndex("devolucao"))
                     listAparelho.add(
@@ -242,7 +235,7 @@ class DbManager {
                             defeito_obs,
                             dataEntrada,
                             dataSaida,
-                            8.0,
+                            valor,
                             idServidor,
                             devolucao
                         )

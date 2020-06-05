@@ -39,8 +39,10 @@ class MainAparelhoActivity : AppCompatActivity() {
         //var bundle :Bundle ?=intent.extras
 
         listAparelho = dbManager.LoadQueryAparelhoByOS(Session.idLocalCadAparelho.toLong())
-        var myNotesAdapter = MyAparelhoAdapter(this, listAparelho)
-        lvAparelhos.adapter = myNotesAdapter
+        if(listAparelho!=null){
+            var myNotesAdapter = MyAparelhoAdapter(this, listAparelho)
+            lvAparelhos.adapter = myNotesAdapter
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
