@@ -30,10 +30,14 @@ class CadastroAparelhoActivity : AppCompatActivity() {
             values.put("valor",valorText.text.toString().toDouble());
             values.put("idCliente",Session.idLocalCadAparelho);
             values.put("pronto","NAO_PRONTO")
+            values.put("entregue","NAO_ENTREGUE")
+            values.put("dataSaida","dataSaida")
+            values.put("devolucao","NAO")
             val date = Util().getCurrentDateTime()
-            values.put("dataEntrada","2018/01/01")
+            values.put("dataEntrada",Util().toSimpleString(date))
             values.put("idServidor",0)
             var ID = dbManager.InsertAparelho(values);
+            Session.idLocalCadAparelho = ID.toInt()
             Toast.makeText(this, "Aparelho inserido com sucesso!", Toast.LENGTH_LONG).show()
 
 

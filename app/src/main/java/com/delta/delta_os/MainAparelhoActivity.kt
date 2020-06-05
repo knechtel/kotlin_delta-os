@@ -25,7 +25,7 @@ class MainAparelhoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main_aparelho)
-        this.setTitle("Aparelhos  "+Session.idCliente);
+        this.setTitle("Aparelhos  "+Session.idLocalCadAparelho);
         listAparelho.add(
             Aparelho(1,"TVLCD","modelo","serial","pronto",3,
             "autorizado","NAO_GARANTIA","NAO_ENTREGUE","defeito",
@@ -38,7 +38,7 @@ class MainAparelhoActivity : AppCompatActivity() {
         //var idCliente = savedInstanceState!!.getString("idCliente");
         //var bundle :Bundle ?=intent.extras
 
-        listAparelho = dbManager.LoadQueryAparelhoByOS(Session.idCliente.toLong())
+        listAparelho = dbManager.LoadQueryAparelhoByOS(Session.idLocalCadAparelho.toLong())
         var myNotesAdapter = MyAparelhoAdapter(this, listAparelho)
         lvAparelhos.adapter = myNotesAdapter
     }

@@ -17,6 +17,7 @@ class Aparelho {
     var dataEntrada:String?=null;
     var dataSaida:String?=null;
     var valor:Double?=null;
+    var devolucao:String?=null
 
     constructor(id:Int,nome:String,modelo:String,
                 serial:String,pronto:String,idCliente:Int,
@@ -39,6 +40,31 @@ class Aparelho {
         this.dataSaida=dataSaida
         this.valor=valor;
         this.idServidor=idServidor;
+    }
+
+    constructor(id:Int,nome:String,modelo:String,
+                serial:String,pronto:String,idCliente:Int,
+                autorizado:String,garantia:String,
+                entregue:String, defeitoObs:String,
+                dataEntrada:String,dataSaida:String,valor:Double,
+                idServidor:Int,
+                devolucao:String
+    ){
+        this.id=id;
+        this.nome=nome;
+        this.modelo=modelo;
+        this.serial=serial;
+        this.pronto=pronto;
+        this.idCliente=idCliente;
+        this.autorizado=autorizado;
+        this.garantia=garantia;
+        this.entregue=entregue;
+        this.defeitoObs=defeitoObs;
+        this.dataEntrada=dataEntrada;
+        this.dataSaida=dataSaida
+        this.valor=valor;
+        this.idServidor=idServidor;
+        this.devolucao = devolucao
     }
     constructor(){}
 

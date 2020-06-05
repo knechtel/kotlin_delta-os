@@ -24,6 +24,7 @@ import com.delta.delta_os.service.AparelhoService
 import com.delta.delta_os.service.AparelhoServiceSync
 import com.delta.delta_os.util.RetrofitInitializer
 import com.delta.delta_os.util.Util
+import kotlinx.android.synthetic.main.activity_edit_aparelho.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.ticcket.*
 import kotlinx.android.synthetic.main.ticcket.view.*
@@ -136,29 +137,31 @@ class MainActivity : AppCompatActivity() {
                             } else {
                                 values.put("pronto", it.pronto)
                             }
-                            if(it.dataEntrada==null){
+                            if (it.dataEntrada == null) {
                                 values.put("dataEntrada", "null")
-                            }else{
+                            } else {
                                 values.put("dataEntrada", Util().toSimpleString(it.dataEntrada!!))
                             }
+                            values.put("devolucao", it.devolucao)
+                            values.put("entregue", it.entregue)
+                            if (it.dataSaida != null)
+                                values.put("dataSaida", Util().toSimpleString(it.dataSaida!!))
                             var ida = it.id!!.toLong()
                             var dbManagerSelect = DbManager(Session.context)
 
 
-                            if (it.idCliente != null) {
-                                if(it.idCliente!=0) {
-                                    var listOfAparelho: List<Aparelho> =
-                                        dbManagerSelect.LoadQueryAparelhoByIdCliente(it.idCliente!!.toLong())
-                                    if (listOfAparelho.size < 1) {
-                                        values.put("idCliente", it.idCliente)
-                                        val ID = dbManager.InsertAparelho(values)
+                            var listOfAparelho: List<Aparelho> =
+                                dbManagerSelect.LoadQueryAparelhoByIdCliente1(it.id!!.toLong())
+                            if (listOfAparelho.size < 1) {
+                                values.put("idCliente", it.id)
+                                val ID = dbManager.InsertAparelho(values)
 
-                                    } else if(listOfAparelho.size==1) {
-                                        println()
-                                        println("muita atençãp aqui ...")
-                                    }
-                                }
+                            } else if (listOfAparelho.size == 1) {
+                                println()
+                                println("muita atençãp aqui ...")
                             }
+
+
                         }
 
                         //println(" Size aqui ->  "+notes.size)
@@ -239,7 +242,8 @@ class MainActivity : AppCompatActivity() {
             println("FIM ..")
             when (item.itemId) {
                 R.id.edit_cliente -> {
-                    var intent = Intent(this,IdClienteActivity::class.java)
+
+                    var intent = Intent(this, IdClienteActivity::class.java)
                     startActivity(intent)
                 }
             }
@@ -273,7 +277,8 @@ class MainActivity : AppCompatActivity() {
             var myView = layoutInflater.inflate(R.layout.ticcket, null)
             var myVCliente = listClienteAdapter[position]
             myView.tvTitle.text = myVCliente.nome;
-            myView.tvDes.text = "id servidor: "+myVCliente.idServidor.toString() + "\nid local: " + myVCliente.id
+            myView.tvDes.text =
+                "id servidor: " + myVCliente.idServidor.toString() + "\nid local: " + myVCliente.id
 
 
 
@@ -281,7 +286,7 @@ class MainActivity : AppCompatActivity() {
             myView.ivEdit.setOnClickListener(View.OnClickListener {
                 Session.Companion.idCliente = myVCliente.id?.toLong() ?: 199;
                 var intent = Intent(this.context, MainAparelhoActivity::class.java)
-
+                Session.Companion.idLocalCadAparelho = myVCliente.id?.toInt() ?: 199;
                 startActivity(intent)
                 Toast.makeText(
                     this.context,

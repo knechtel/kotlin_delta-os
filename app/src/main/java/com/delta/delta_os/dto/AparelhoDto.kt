@@ -18,6 +18,7 @@ class AparelhoDto {
     var dataEntrada:Date?=null;
     var dataSaida: Date?=null;
     var valor:Double?=null;
+    var devolucao:String?=null;
 
     fun build(aparelho: Aparelho):AparelhoDto{
         var aparelhoDto = AparelhoDto()

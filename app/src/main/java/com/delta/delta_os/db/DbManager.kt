@@ -36,8 +36,9 @@ class DbManager {
     val defeito_obs = "defeito_obs"
     val dataEntrada = "dataEntrada"
     val dataSaida = "dataSaida"
+    val devolucao = "devolucao"
     val valor = "valor"
-    val dbVersion = 42
+    val dbVersion = 56
 
     //CREATE TABLE IF NOT EXISTS MyNotes (ID INTEGER PRIMARY KEY,title TEXT, Description TEXT);"
     val sqlCreateTable =
@@ -64,6 +65,7 @@ class DbManager {
                 defeito_obs + " TEXT NULL, " +
                 dataEntrada + " TEXT NULL, " +
                 dataSaida + " TEXT NULL, " +
+                devolucao + " TEXT NULL, " +
                 valor + " REAL);"
     var sqlDB: SQLiteDatabase? = null
 
@@ -78,7 +80,7 @@ class DbManager {
     inner class DatabaseHelperNotes : SQLiteOpenHelper {
         var context: Context? = null
 
-        constructor(context: Context) : super(context, dbName, null, 42) {
+        constructor(context: Context) : super(context, dbName, null, 56) {
             this.context = context
         }
 
@@ -162,6 +164,7 @@ class DbManager {
                     // val dataSaida=cursor.getString(cursor.getColumnIndex("dataSaida"))
                     //  val valor=cursor.getDouble(cursor.getColumnIndex("valor").toDouble().toInt())
                     val idServidor = cursor.getInt(cursor.getColumnIndex("idServidor"))
+                    val devolucao = cursor.getString(cursor.getColumnIndex("devolucao"))
                     listAparelho.add(
                         Aparelho(
                             ID,
@@ -177,7 +180,8 @@ class DbManager {
                             dataEntrada,
                             "",
                             8.0,
-                            idServidor
+                            idServidor,
+                            devolucao
                         )
                     )
 
@@ -210,7 +214,7 @@ class DbManager {
                     val garantia =
                         "NAO_GARANTIA"//cursor.getString(cursor.getColumnIndex("garantia"))
                     val entregue =
-                        "NAO_ENTREGUE"//cursor.getString(cursor.getColumnIndex("entregue"))
+                        cursor.getString(cursor.getColumnIndex("entregue"))
                     val defeito_obs = "OBS"//cursor.getString(cursor.getColumnIndex("defeito_obs"))
                     //var dataEntrada = ""
                     val dataEntrada = cursor.getString(cursor.getColumnIndex("dataEntrada"))
@@ -220,9 +224,10 @@ class DbManager {
                      //   val dataEntrada = temp
                     //}
 
-                    // val dataSaida=cursor.getString(cursor.getColumnIndex("dataSaida"))
+                     val dataSaida=cursor.getString(cursor.getColumnIndex("dataSaida"))
                     //  val valor=cursor.getDouble(cursor.getColumnIndex("valor").toDouble().toInt())
                     val idServidor = cursor.getInt(cursor.getColumnIndex("idServidor"))
+                    val devolucao =  cursor.getString(cursor.getColumnIndex("devolucao"))
                     listAparelho.add(
                         Aparelho(
                             ID,
@@ -236,9 +241,10 @@ class DbManager {
                             entregue,
                             defeito_obs,
                             dataEntrada,
-                            "",
+                            dataSaida,
                             8.0,
-                            idServidor
+                            idServidor,
+                            devolucao
                         )
                     )
 
@@ -576,6 +582,9 @@ class DbManager {
         values.put("modelo", aparelho.modelo)
         values.put("serial", aparelho.serial)
         values.put("valor", aparelho.valor)
+        values.put("devolucao", aparelho.devolucao)
+        values.put("entregue", aparelho.entregue)
+        values.put("dataSaida", aparelho.dataSaida)
         return values;
     }
 
@@ -685,6 +694,62 @@ class DbManager {
         }
         cursor!!.close()
         return listCliente;
+
+
+    }
+
+    fun LoadQueryAparelhoByIdCliente1(ID: Long): ArrayList<Aparelho> {
+        var listAparelho = ArrayList<Aparelho>()
+
+        val cursor =
+            sqlDB?.rawQuery("select * from Aparelho  where  idCliente = " + ID + " ;", null);
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                var pronto = "";
+                do {
+                    val ID = cursor.getInt(cursor.getColumnIndex("id"))
+                    val nome = cursor.getString(cursor.getColumnIndex("nome"))
+                    val modelo = cursor.getString(cursor.getColumnIndex("modelo"))
+                    val serial = cursor.getString(cursor.getColumnIndex("serial"))
+                    pronto = "pronto";
+                    val idCliente = cursor.getInt(cursor.getColumnIndex("idCliente"))
+                    val autorizado =
+                        "autorizado"//cursor.getString(cursor.getColumnIndex("autorizado"))
+                    val garantia =
+                        "NAO_GARANTIA"//cursor.getString(cursor.getColumnIndex("garantia"))
+                    val entregue =
+                        "NAO_ENTREGUE"//cursor.getString(cursor.getColumnIndex("entregue"))
+                    val defeito_obs = "OBS"//cursor.getString(cursor.getColumnIndex("defeito_obs"))
+                    val dataEntrada =
+                        "dataEntrada"//cursor.getString(cursor.getColumnIndex("dataEntrada"))
+                    // val dataSaida=cursor.getString(cursor.getColumnIndex("dataSaida"))
+                    //  val valor=cursor.getDouble(cursor.getColumnIndex("valor").toDouble().toInt())
+                    val idServidor = cursor.getInt(cursor.getColumnIndex("idServidor"))
+                    listAparelho.add(
+                        Aparelho(
+                            ID,
+                            nome,
+                            modelo,
+                            serial,
+                            pronto,
+                            idCliente,
+                            autorizado,
+                            garantia,
+                            entregue,
+                            defeito_obs,
+                            dataEntrada,
+                            "",
+                            8.0,
+                            idServidor
+                        )
+                    )
+
+                } while (cursor.moveToNext())
+            }
+        }
+        cursor!!.close()
+        return listAparelho;
 
 
     }

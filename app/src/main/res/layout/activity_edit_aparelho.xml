@@ -41,9 +41,33 @@
             android:id="@+id/dataEntradaText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="none"
+            android:enabled="false"
             android:ems="10"
             android:hint="dataEntrada"
-            android:inputType="textPersonName" />
+            />
+
+        <CheckBox
+            android:id="@+id/checkBoxDevolucao"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Devolucao" />
+
+        <CheckBox
+            android:id="@+id/checkBoxEntregue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Entregue" />
+
+        <EditText
+            android:id="@+id/dataSaidaText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="dataSaida"
+            android:inputType="none"
+            android:enabled="false"
+             />
 
         <EditText
             android:id="@+id/valorText"
