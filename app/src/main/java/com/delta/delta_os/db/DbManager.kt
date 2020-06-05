@@ -38,7 +38,7 @@ class DbManager {
     val dataSaida = "dataSaida"
     val devolucao = "devolucao"
     val valor = "valor"
-    val dbVersion = 59
+    val dbVersion = 64
 
     //CREATE TABLE IF NOT EXISTS MyNotes (ID INTEGER PRIMARY KEY,title TEXT, Description TEXT);"
     val sqlCreateTable =
@@ -80,7 +80,7 @@ class DbManager {
     inner class DatabaseHelperNotes : SQLiteOpenHelper {
         var context: Context? = null
 
-        constructor(context: Context) : super(context, dbName, null, 59) {
+        constructor(context: Context) : super(context, dbName, null, 64) {
             this.context = context
         }
 
@@ -161,8 +161,8 @@ class DbManager {
                     val defeito_obs = "OBS"//cursor.getString(cursor.getColumnIndex("defeito_obs"))
                     val dataEntrada =
                         "dataEntrada"//cursor.getString(cursor.getColumnIndex("dataEntrada"))
-                    // val dataSaida=cursor.getString(cursor.getColumnIndex("dataSaida"))
-                    //  val valor=cursor.getDouble(cursor.getColumnIndex("valor").toDouble().toInt())
+                     val dataSaida=cursor.getString(cursor.getColumnIndex("dataSaida"))
+                      val valor=cursor.getDouble(cursor.getColumnIndex("valor"))
                     val idServidor = cursor.getInt(cursor.getColumnIndex("idServidor"))
                     val devolucao = cursor.getString(cursor.getColumnIndex("devolucao"))
                     listAparelho.add(
@@ -178,8 +178,8 @@ class DbManager {
                             entregue,
                             defeito_obs,
                             dataEntrada,
-                            "",
-                            8.0,
+                            dataSaida,
+                            valor ,
                             idServidor,
                             devolucao
                         )
@@ -197,7 +197,7 @@ class DbManager {
     fun LoadQueryAparelhoByOS(ID: Long): ArrayList<Aparelho> {
         var listAparelho = ArrayList<Aparelho>()
 
-        val cursor = sqlDB?.rawQuery("select * from Aparelho  where  id = " + ID + " ;", null);
+        val cursor = sqlDB?.rawQuery("select * from Aparelho  where  idCliente = " + ID + " ;", null);
 
         if (cursor != null) {
             if (cursor.moveToFirst()) {
@@ -695,7 +695,7 @@ class DbManager {
         var listAparelho = ArrayList<Aparelho>()
 
         val cursor =
-            sqlDB?.rawQuery("select * from Aparelho  where  idCliente = " + ID + " ;", null);
+            sqlDB?.rawQuery("select * from Aparelho  where  id = " + ID + " ;", null);
 
         if (cursor != null) {
             if (cursor.moveToFirst()) {
@@ -712,13 +712,14 @@ class DbManager {
                     val garantia =
                         "NAO_GARANTIA"//cursor.getString(cursor.getColumnIndex("garantia"))
                     val entregue =
-                        "NAO_ENTREGUE"//cursor.getString(cursor.getColumnIndex("entregue"))
-                    val defeito_obs = "OBS"//cursor.getString(cursor.getColumnIndex("defeito_obs"))
+                        cursor.getString(cursor.getColumnIndex("entregue"))
+                    val defeito_obs = cursor.getString(cursor.getColumnIndex("defeito_obs"))
                     val dataEntrada =
-                        "dataEntrada"//cursor.getString(cursor.getColumnIndex("dataEntrada"))
-                    // val dataSaida=cursor.getString(cursor.getColumnIndex("dataSaida"))
-                    //  val valor=cursor.getDouble(cursor.getColumnIndex("valor").toDouble().toInt())
+                        cursor.getString(cursor.getColumnIndex("dataEntrada"))
+                     val dataSaida=cursor.getString(cursor.getColumnIndex("dataSaida"))
+                      val valor=cursor.getDouble(cursor.getColumnIndex("valor").toDouble().toInt())
                     val idServidor = cursor.getInt(cursor.getColumnIndex("idServidor"))
+                    val devolucao = cursor.getString(cursor.getColumnIndex("devolucao"))
                     listAparelho.add(
                         Aparelho(
                             ID,
@@ -731,10 +732,10 @@ class DbManager {
                             garantia,
                             entregue,
                             defeito_obs,
-                            dataEntrada,
-                            "",
-                            8.0,
-                            idServidor
+                            dataEntrada, dataSaida,
+                            valor,
+                            idServidor,
+                            devolucao
                         )
                     )
 

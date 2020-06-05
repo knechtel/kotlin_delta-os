@@ -69,7 +69,7 @@ class CadastroAparelhoActivity : AppCompatActivity() {
 
 
                 var intent = Intent(this, MainAparelhoActivity::class.java)
-                intent.putExtra("idCliente", ID)
+
                 startActivity(intent)
             }
         }

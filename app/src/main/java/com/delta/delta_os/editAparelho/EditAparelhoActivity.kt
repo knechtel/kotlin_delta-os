@@ -21,7 +21,7 @@ class EditAparelhoActivity : AppCompatActivity() {
         setContentView(R.layout.activity_edit_aparelho)
 
       var dbManager = DbManager(this);
-      var listAparelho =   dbManager.LoadQueryAparelhoByOS(Session.idLocal.toLong())
+      var listAparelho =   dbManager.LoadQueryAparelhoByIdCliente1(Session.idLocalCadAparelho.toLong())
 
         nomeText.setText(listAparelho[0].nome)
         modeloText.setText(listAparelho[0].modelo)

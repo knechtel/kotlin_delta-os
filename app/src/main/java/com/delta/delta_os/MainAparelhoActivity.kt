@@ -38,7 +38,8 @@ class MainAparelhoActivity : AppCompatActivity() {
         //var idCliente = savedInstanceState!!.getString("idCliente");
         //var bundle :Bundle ?=intent.extras
 
-        listAparelho = dbManager.LoadQueryAparelhoByOS(Session.idLocalCadAparelho.toLong())
+        if(Session.idLocalAparelhos!=-1)
+        listAparelho = dbManager.LoadQueryAparelhoByOS(Session.idLocalAparelhos.toLong())
         if(listAparelho!=null){
             var myNotesAdapter = MyAparelhoAdapter(this, listAparelho)
             lvAparelhos.adapter = myNotesAdapter
@@ -96,7 +97,7 @@ class MainAparelhoActivity : AppCompatActivity() {
             myView.ivEdit.setOnClickListener({
                 var intent = Intent(this.context, EditAparelhoActivity::class.java)
 //              intent.putExtra("idLocal",myVCliente.id)
-                Session.idLocal = myVCliente.id!!.toInt()
+                Session.idLocalCadAparelho = myVCliente.id!!.toInt()
                 startActivity(intent)
             })
 

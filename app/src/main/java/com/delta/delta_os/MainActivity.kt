@@ -48,9 +48,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         Session.context = this
 
-
-
-
         LoadQuery()
         println("PASSEI AQUI")
         val call = RetrofitInitializer().noteService().getClientes()
@@ -164,8 +161,6 @@ class MainActivity : AppCompatActivity() {
 
 
                         }
-
-                        //println(" Size aqui ->  "+notes.size)
                     }
                 }
 
@@ -248,6 +243,12 @@ class MainActivity : AppCompatActivity() {
                     startActivity(intent)
                 }
             }
+
+            when(item.itemId){
+                R.id.app_bar_search ->{
+                    println("go sincronismo")
+                }
+            }
         }
 
         return super.onOptionsItemSelected(item)
@@ -287,7 +288,9 @@ class MainActivity : AppCompatActivity() {
             myView.ivEdit.setOnClickListener(View.OnClickListener {
                 Session.Companion.idCliente = myVCliente.id?.toLong() ?: 199;
                 var intent = Intent(this.context, MainAparelhoActivity::class.java)
+                // aqui tem um bug
                 Session.Companion.idLocalCadAparelho = myVCliente.id?.toInt() ?: 199;
+                Session.idLocalAparelhos = myVCliente.id?.toInt() ?: -1;
                 startActivity(intent)
                 Toast.makeText(
                     this.context,
@@ -324,38 +327,6 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-    }
-
-    fun GoToUpdate(cliente: Cliente) {
-        var intent = Intent(this, ClienteEditaActivity::class.java)
-//        intent.putExtra("nome",cliente.nome)
-//        intent.putExtra("cpf",cliente.cpf)
-//        intent.putExtra("endereco",cliente.endereco)
-//        intent.putExtra("telefone",cliente.telefone)
-//        intent.putExtra("email",cliente.email)
-        startActivity(intent)
-    }
-
-    fun ConvertStreamToString(inputStream: InputStream): String {
-
-        val bufferReader = BufferedReader(InputStreamReader(inputStream))
-        var line: String
-        var AllString: String = ""
-
-        try {
-            do {
-                line = bufferReader.readLine()
-                if (line != null) {
-                    AllString += line
-                }
-            } while (line != null)
-            inputStream.close()
-        } catch (ex: Exception) {
-        }
-
-
-
-        return AllString
     }
 
 }
