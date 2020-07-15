@@ -26,23 +26,22 @@ class MainAparelhoActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_main_aparelho)
         this.setTitle("Aparelhos  "+Session.idLocalCadAparelho);
-        listAparelho.add(
-            Aparelho(1,"TVLCD","modelo","serial","pronto",3,
-            "autorizado","NAO_GARANTIA","NAO_ENTREGUE","defeito",
-                 "data", "dataSaida",120.0,1
 
-            )
-
-        )
         var dbManager = DbManager(this);
         //var idCliente = savedInstanceState!!.getString("idCliente");
         //var bundle :Bundle ?=intent.extras
 
         if(Session.idLocalAparelhos!=-1)
-        listAparelho = dbManager.LoadQueryAparelhoByOS(Session.idLocalAparelhos.toLong())
+        listAparelho = dbManager.LoadQueryAparelhoByOS(Session.idLocalCadAparelho.toLong())
         if(listAparelho!=null){
             var myNotesAdapter = MyAparelhoAdapter(this, listAparelho)
             lvAparelhos.adapter = myNotesAdapter
+        }else{
+            Toast.makeText(
+                this,
+                " edit! = nullo listAparelhos" + Session.Companion.idLocalAparelhos,
+                Toast.LENGTH_LONG
+            ).show()
         }
     }
 
@@ -97,7 +96,7 @@ class MainAparelhoActivity : AppCompatActivity() {
             myView.ivEdit.setOnClickListener({
                 var intent = Intent(this.context, EditAparelhoActivity::class.java)
 //              intent.putExtra("idLocal",myVCliente.id)
-                Session.idLocalCadAparelho = myVCliente.id!!.toInt()
+                Session.idLocalCadAparelho = myVCliente.idCliente!!.toInt()
                 startActivity(intent)
             })
 

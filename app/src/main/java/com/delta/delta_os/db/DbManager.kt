@@ -38,7 +38,7 @@ class DbManager {
     val dataSaida = "dataSaida"
     val devolucao = "devolucao"
     val valor = "valor"
-    val dbVersion = 64
+    val dbVersion = 88
 
     //CREATE TABLE IF NOT EXISTS MyNotes (ID INTEGER PRIMARY KEY,title TEXT, Description TEXT);"
     val sqlCreateTable =
@@ -80,7 +80,7 @@ class DbManager {
     inner class DatabaseHelperNotes : SQLiteOpenHelper {
         var context: Context? = null
 
-        constructor(context: Context) : super(context, dbName, null, 64) {
+        constructor(context: Context) : super(context, dbName, null, 88) {
             this.context = context
         }
 
@@ -160,8 +160,9 @@ class DbManager {
                         "NAO_ENTREGUE"//cursor.getString(cursor.getColumnIndex("entregue"))
                     val defeito_obs = "OBS"//cursor.getString(cursor.getColumnIndex("defeito_obs"))
                     val dataEntrada =
-                        "dataEntrada"//cursor.getString(cursor.getColumnIndex("dataEntrada"))
+                        cursor.getString(cursor.getColumnIndex("dataEntrada"))
                      val dataSaida=cursor.getString(cursor.getColumnIndex("dataSaida"))
+
                       val valor=cursor.getDouble(cursor.getColumnIndex("valor"))
                     val idServidor = cursor.getInt(cursor.getColumnIndex("idServidor"))
                     val devolucao = cursor.getString(cursor.getColumnIndex("devolucao"))
@@ -181,7 +182,7 @@ class DbManager {
                             dataSaida,
                             valor ,
                             idServidor,
-                            devolucao
+                             devolucao
                         )
                     )
 
@@ -274,8 +275,8 @@ class DbManager {
                         "NAO_ENTREGUE"//cursor.getString(cursor.getColumnIndex("entregue"))
                     val defeito_obs = "OBS"//cursor.getString(cursor.getColumnIndex("defeito_obs"))
                     val dataEntrada =
-                        "dataEntrada"//cursor.getString(cursor.getColumnIndex("dataEntrada"))
-                    // val dataSaida=cursor.getString(cursor.getColumnIndex("dataSaida"))
+                        cursor.getString(cursor.getColumnIndex("dataEntrada"))
+                    val dataSaida=cursor.getString(cursor.getColumnIndex("dataSaida"))
                     //  val valor=cursor.getDouble(cursor.getColumnIndex("valor").toDouble().toInt())
                     val idServidor = cursor.getInt(cursor.getColumnIndex("idServidor"))
                     listAparelho.add(
@@ -291,7 +292,7 @@ class DbManager {
                             entregue,
                             defeito_obs,
                             dataEntrada,
-                            "",
+                            dataSaida,
                             8.0,
                             idServidor
                         )
@@ -450,10 +451,9 @@ class DbManager {
                         "NAO_ENTREGUE"//cursor.getString(cursor.getColumnIndex("entregue"))
                     val defeito_obs =
                         "OBS"//cursor.getString(cursor.getColumnIndex("defeito_obs"))
-                    val dataEntrada =
-                        "dataEntrada"//cursor.getString(cursor.getColumnIndex("dataEntrada"))
-                    // val dataSaida=cursor.getString(cursor.getColumnIndex("dataSaida"))
-                    //  val valor=cursor.getDouble(cursor.getColumnIndex("valor").toDouble().toInt())
+                    val dataEntrada = cursor.getString(cursor.getColumnIndex("dataEntrada"))
+                    val dataSaida=cursor.getString(cursor.getColumnIndex("dataSaida"))
+                      val valor=cursor.getDouble(cursor.getColumnIndex("valor"))
                     val idServidor = cursor.getInt(cursor.getColumnIndex("idServidor"))
                     listAparelho.add(
                         Aparelho(
@@ -468,8 +468,8 @@ class DbManager {
                             entregue,
                             defeito_obs,
                             dataEntrada,
-                            "",
-                            8.0,
+                            dataSaida,
+                            valor,
                             idServidor
                         )
                     )
@@ -578,6 +578,7 @@ class DbManager {
         values.put("devolucao", aparelho.devolucao)
         values.put("entregue", aparelho.entregue)
         values.put("dataSaida", aparelho.dataSaida)
+        values.put("dataEntrada", aparelho.dataEntrada)
         return values;
     }
 

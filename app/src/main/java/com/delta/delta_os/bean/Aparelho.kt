@@ -68,5 +68,7 @@ class Aparelho {
     }
     constructor(){}
 
-    //func dtoToBean():Aparelho
+//    func dtoToBean(aparelhoDto:AparelhoDto):Aparelho{
+//        return null;
+//    }
 }

@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.os.AsyncTask
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -12,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.delta.delta_os.bean.Aparelho
 import com.delta.delta_os.bean.Cliente
@@ -20,6 +22,7 @@ import com.delta.delta_os.db.DbManager
 import com.delta.delta_os.dto.AparelhoDto
 import com.delta.delta_os.editAparelho.EditAparelhoActivity
 import com.delta.delta_os.editCliente.IdClienteActivity
+import com.delta.delta_os.modal.MainDialogActivity
 import com.delta.delta_os.service.AparelhoService
 import com.delta.delta_os.service.AparelhoServiceSync
 import com.delta.delta_os.util.RetrofitInitializer
@@ -43,13 +46,14 @@ class MainActivity : AppCompatActivity() {
 
     var listCliente = ArrayList<Cliente>();
     var context: Context? = null
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         Session.context = this
 
         LoadQuery()
-        println("PASSEI AQUI")
+
         val call = RetrofitInitializer().noteService().getClientes()
         call.enqueue(object : Callback<List<Cliente>?> {
             override fun onResponse(
@@ -92,6 +96,7 @@ class MainActivity : AppCompatActivity() {
 
         val callAparelho = RetrofitInitializer().noteService().getAparelho().apply {
             enqueue(object : Callback<List<AparelhoDto>?> {
+                @RequiresApi(Build.VERSION_CODES.O)
                 override fun onResponse(
                     call: Call<List<AparelhoDto>?>?,
                     response: Response<List<AparelhoDto>?>?
@@ -137,13 +142,15 @@ class MainActivity : AppCompatActivity() {
                             if (it.dataEntrada == null) {
                                 values.put("dataEntrada", "null")
                             } else {
-                                values.put("dataEntrada", Util().toSimpleString(it.dataEntrada!!))
+                                values.put("dataEntrada",it.dataEntrada!!)
                             }
                             values.put("devolucao", it.devolucao)
                             values.put("entregue", it.entregue)
                             values.put("defeito_obs",it.defeito_obs)
                             if (it.dataSaida != null)
-                                values.put("dataSaida", Util().toSimpleString(it.dataSaida!!))
+                                values.put("dataSaida",it.dataSaida!!)
+                            else
+                                values.put("dataSaida","dataSaida")
                             var ida = it.id!!.toLong()
                             var dbManagerSelect = DbManager(Session.context)
 
@@ -156,6 +163,38 @@ class MainActivity : AppCompatActivity() {
 
                             } else if (listOfAparelho.size == 1) {
                                 println()
+
+                                var db = DbManager(Session.context)
+
+                                var listAparelho = db.LoadQueryAparelhoByIdCliente(it.id!!.toLong())
+                                var listAparelhoDto=ArrayList<AparelhoDto>()
+                                println("passei aqui 1234556778")
+                                println(listAparelho.size)
+                               listAparelho.forEach(
+                                   {
+                                       listAparelhoDto.add(AparelhoDto().build(it))
+                                   }
+                               )
+
+
+                                val callAparelho = RetrofitInitializer().aparelhoService().
+                                mergeAparelho(listAparelhoDto).enqueue(
+                                    object : Callback<List<AparelhoDto>?> {
+                                        override fun onResponse(
+                                            call: Call<List<AparelhoDto>?>?,
+                                            response: Response<List<AparelhoDto>?>?
+                                        ) {
+                                        }
+
+                                        override fun onFailure(
+                                            call: Call<List<AparelhoDto>?>?,
+                                            t: Throwable?
+                                        ) {
+                                            Log.e("onFailure error", t?.message)
+                                        }
+                                    }
+                                )
+
                                 println("muita atençãp aqui ...")
                             }
 
@@ -169,6 +208,7 @@ class MainActivity : AppCompatActivity() {
                 }
             })
         }
+
     }
 
 
@@ -177,6 +217,7 @@ class MainActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
 
         if (item != null) {
@@ -228,11 +269,15 @@ class MainActivity : AppCompatActivity() {
                         }
                     )
                     LoadQuery();
+                    println("APARELHO ------ ----- ------ ---- ---- ")
+                    println("CHMA AQUI")
+                    var dbManagerAparelho = DbManager(Session.context)
+                    var listAparelho: List<Aparelho>
+                    var i = AparelhoServiceSync().atualizaAparelho()
+
                 }
             }
-            var dbManagerAparelho = DbManager(Session.context)
-            var listAparelho: List<Aparelho>
-            var i = AparelhoServiceSync().atualizaAparelho()
+
 
             //     println("valor de AparelhoServiceSync 12345 =  =  "+i.id.toString()+" nome"+i.nome)
             println("FIM ..")
@@ -294,7 +339,7 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
                 Toast.makeText(
                     this.context,
-                    " edit! = " + Session.Companion.idCliente,
+                    " edit! = " + Session.Companion.idLocalAparelhos,
                     Toast.LENGTH_LONG
                 ).show()
             });
@@ -306,9 +351,13 @@ class MainActivity : AppCompatActivity() {
                     Toast.LENGTH_LONG
                 ).show()
 
-                var dbManager = DbManager(this.context!!)
-                val selectionArgs = arrayOf(myVCliente.id.toString())
-                dbManager.Delete("ID=?", selectionArgs)
+//                var dbManager = DbManager(this.context!!)
+//                val selectionArgs = arrayOf(myVCliente.id.toString())
+//                dbManager.Delete("ID=?", selectionArgs)
+                var intent = Intent(this.context, MainDialogActivity::class.java).also {
+                    startActivity(it)
+                }
+
                 LoadQuery();
             })
             return myView

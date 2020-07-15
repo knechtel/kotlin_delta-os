@@ -1,6 +1,8 @@
 package com.delta.delta_os.service
 
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.delta.delta_os.bean.Aparelho
 import com.delta.delta_os.bean.Session
 import com.delta.delta_os.db.DbManager
@@ -14,6 +16,7 @@ import java.util.ArrayList
 
 class AparelhoServiceSync {
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun atualizaAparelho(): List<Aparelho> {
 
         var db = DbManager(Session.context)
@@ -33,13 +36,15 @@ class AparelhoServiceSync {
                 ) {
                     response?.body()?.let {
                         var listClienteSync: List<AparelhoDto> = it;
+                        println("------------------------- aqui"+listClienteSync.size)
+                        listClienteSync.forEach {apDto ->
 
-                        listDTO.forEach {apDto ->
-
+                            println("apDto - "+apDto.idServidor)
                             listAparelho.forEach { aparelho ->
-
+                                println("ID servidor "+apDto.id)
+                                println("ID local "+aparelho.id)
                                 var dbAparelho = DbManager(Session.context)
-                                dbAparelho.updateAparelho(aparelho.id!!.toLong(),apDto.id!!.toLong());
+                                dbAparelho.updateAparelho(apDto.id!!.toLong(),aparelho.id!!.toLong());
                             }
                         }
 
@@ -48,7 +53,7 @@ class AparelhoServiceSync {
                 }
 
                 override fun onFailure(call: Call<List<AparelhoDto>?>?, t: Throwable?) {
-
+                    println("FALHOU AQUI >..................")
                 }
             }
         )

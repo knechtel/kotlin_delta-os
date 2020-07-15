@@ -64,7 +64,7 @@ class CadastroAparelhoActivity : AppCompatActivity() {
                 values.put("dataEntrada", Util().toSimpleString(date))
                 values.put("idServidor", 0)
                 var ID = dbManager.InsertAparelho(values);
-                Session.idLocalCadAparelho = ID.toInt()
+               // Session.idLocalCadAparelho = ID.toInt()
                 Toast.makeText(this, "Aparelho inserido com sucesso!", Toast.LENGTH_LONG).show()
 
 

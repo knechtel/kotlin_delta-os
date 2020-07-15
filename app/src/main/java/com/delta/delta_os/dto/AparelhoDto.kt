@@ -1,6 +1,10 @@
 package com.delta.delta_os.dto
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.delta.delta_os.bean.Aparelho
+import com.delta.delta_os.util.Util
+import com.fasterxml.jackson.annotation.JsonFormat
 import java.util.*
 
 class AparelhoDto {
@@ -15,20 +19,33 @@ class AparelhoDto {
     var garantia:String?=null;
     var entregue:String?=null;
     var defeito_obs:String?=null;
-    var dataEntrada:Date?=null;
-    var dataSaida: Date?=null;
+
+    var dataEntrada:String?=null;
+
+    var dataSaida: String?=null;
     var valor:Double?=null;
     var devolucao:String?=null;
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun build(aparelho: Aparelho):AparelhoDto{
         var aparelhoDto = AparelhoDto()
-        aparelhoDto.id = aparelho.id
-        aparelhoDto.idServidor =aparelho.idServidor
+        aparelhoDto.id = aparelho.idServidor
+
         aparelhoDto.nome = aparelho.nome
         aparelhoDto.modelo = aparelho.modelo
         aparelhoDto.serial = aparelho.serial
         aparelhoDto.idCliente = aparelho.idCliente
+        aparelhoDto.autorizado = aparelho.autorizado
+        aparelhoDto.garantia = aparelho.garantia
+        aparelhoDto.entregue = aparelho.entregue
+        aparelhoDto.defeito_obs =aparelho.defeitoObs
+        aparelhoDto.dataEntrada = aparelho.dataEntrada
+        aparelhoDto.dataSaida = aparelho.dataSaida
+        aparelhoDto.valor = aparelho.valor
+        aparelhoDto.devolucao = aparelhoDto.devolucao
         return aparelhoDto
     }
+
+
 
 }
