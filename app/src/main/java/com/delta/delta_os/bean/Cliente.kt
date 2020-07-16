@@ -8,17 +8,18 @@ class Cliente{
     var endereco:String?=null;
     var email:String?=null;
     var telefone:String?=null;
+    var uuidCliente:String?=null;
 
 
-    constructor(id:Int,nome:String,cpf:String,endereco:String,email:String,telefone:String,idServidor:Int){
+    constructor(id:Int,nome:String,cpf:String,endereco:String,email:String,telefone:String,idServidor:Int,uuidCliente:String){
         this.id=id;
         this.nome=nome;
         this.cpf=cpf;
         this.endereco=endereco;
         this.email=email;
         this.telefone=telefone;
-        this.idServidor=idServidor
-
+        this.idServidor=idServidor;
+        this.uuidCliente=uuidCliente;
     }
     constructor(){
 
