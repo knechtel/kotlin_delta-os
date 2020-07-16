@@ -39,6 +39,7 @@ class DbManager {
     val devolucao = "devolucao"
     val valor = "valor"
     val dbVersion = 88
+    val uuidCliente = "";
 
     //CREATE TABLE IF NOT EXISTS MyNotes (ID INTEGER PRIMARY KEY,title TEXT, Description TEXT);"
     val sqlCreateTable =
@@ -49,6 +50,7 @@ class DbManager {
                 colCpf + " TEXT, " +
                 colEndereco + " TEXT, " +
                 colTelefone + " TEXT, " +
+                uuidCliente + " TEXT, " +
                 " " + colEmail + " TEXT);"
     val sqlCreateTable2 =
         " CREATE TABLE IF NOT EXISTS " + dbTableAparelho + " (" +
@@ -66,6 +68,7 @@ class DbManager {
                 dataEntrada + " TEXT NULL, " +
                 dataSaida + " TEXT NULL, " +
                 devolucao + " TEXT NULL, " +
+                uuidCliente  + " TEXT, " +
                 valor + " REAL);"
     var sqlDB: SQLiteDatabase? = null
 
