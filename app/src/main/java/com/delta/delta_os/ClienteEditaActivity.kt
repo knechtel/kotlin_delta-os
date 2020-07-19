@@ -8,6 +8,7 @@ import android.widget.Toast
 import com.delta.delta_os.bean.Session
 import com.delta.delta_os.db.DbManager
 import kotlinx.android.synthetic.main.activity_cliente_edita.*
+import java.util.UUID;
 
 
 class ClienteEditaActivity : AppCompatActivity() {
@@ -18,14 +19,16 @@ class ClienteEditaActivity : AppCompatActivity() {
         this.setTitle("Cadastro de Cliente");
         salvarButton.setOnClickListener {
             var dbManager= DbManager(this)
-            var values= ContentValues()
+            var values = ContentValues().also {
 
-            values.put("nome",nomeText.text.toString())
-            values.put("cpf",cpfText.text.toString())
-            values.put("endereco",enderecoText.text.toString())
-            values.put("telefone",telefoneText.text.toString())
-            values.put("email",emailText.text.toString())
-            values.put("idServidor",0);
+                it.put("nome",nomeText.text.toString())
+                it.put("cpf",cpfText.text.toString())
+                it.put("endereco",enderecoText.text.toString())
+                it.put("telefone",telefoneText.text.toString())
+                it.put("email",emailText.text.toString())
+                it.put("idServidor",0);
+                it.put("uuidCliente",UUID.randomUUID().toString())
+            };
             val ID = dbManager.Insert(values)
 
             Toast.makeText(this, " Cliente adicionado! ID ="+ID, Toast.LENGTH_LONG).show()

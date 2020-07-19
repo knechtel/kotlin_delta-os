@@ -55,6 +55,7 @@ class CadastroAparelhoActivity : AppCompatActivity() {
                     );
                 }
                 values.put("idCliente", Session.idLocalCadAparelho);
+                values.put("uuidCliente", Session.uuidCliente);
                 values.put("pronto", "NAO_PRONTO")
                 values.put("entregue", "NAO_ENTREGUE")
                 values.put("dataSaida", "dataSaida")

@@ -18,6 +18,7 @@ class Aparelho {
     var dataSaida:String?=null;
     var valor:Double?=null;
     var devolucao:String?=null
+    var uuidCliente:String?=null
 
     constructor(id:Int,nome:String,modelo:String,
                 serial:String,pronto:String,idCliente:Int,
@@ -48,7 +49,8 @@ class Aparelho {
                 entregue:String, defeitoObs:String,
                 dataEntrada:String,dataSaida:String,valor:Double,
                 idServidor:Int,
-                devolucao:String
+                devolucao:String,
+                uuidCliente:String
     ){
         this.id=id;
         this.nome=nome;
@@ -64,7 +66,8 @@ class Aparelho {
         this.dataSaida=dataSaida
         this.valor=valor;
         this.idServidor=idServidor;
-        this.devolucao = devolucao
+        this.devolucao = devolucao;
+        this.uuidCliente = uuidCliente;
     }
     constructor(){}
 

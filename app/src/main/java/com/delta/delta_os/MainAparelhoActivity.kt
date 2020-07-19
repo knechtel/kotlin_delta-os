@@ -25,14 +25,14 @@ class MainAparelhoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main_aparelho)
-        this.setTitle("Aparelhos  "+Session.idLocalCadAparelho);
+        this.setTitle("Aparelhos  "+Session.uuidCliente);
 
         var dbManager = DbManager(this);
         //var idCliente = savedInstanceState!!.getString("idCliente");
         //var bundle :Bundle ?=intent.extras
 
-        if(Session.idLocalAparelhos!=-1)
-        listAparelho = dbManager.LoadQueryAparelhoByOS(Session.idLocalCadAparelho.toLong())
+
+        listAparelho = dbManager.LoadQueryAparelhoByIdClienteuuid(Session.uuidCliente)
         if(listAparelho!=null){
             var myNotesAdapter = MyAparelhoAdapter(this, listAparelho)
             lvAparelhos.adapter = myNotesAdapter
@@ -90,8 +90,8 @@ class MainAparelhoActivity : AppCompatActivity() {
             var myVCliente = listAparelhoAdapter[position]
             myView.tvTitle.text = myVCliente.nome;
             myView.tvDes.text = "id local "+myVCliente.id.toString()+ "\nidServidor "+myVCliente.idServidor+
-            "\nidCliente "+myVCliente.idCliente;
-
+            "\nidCliente "+myVCliente.idCliente+
+            "\nuuid : "+myVCliente.uuidCliente;
 
             myView.ivEdit.setOnClickListener({
                 var intent = Intent(this.context, EditAparelhoActivity::class.java)

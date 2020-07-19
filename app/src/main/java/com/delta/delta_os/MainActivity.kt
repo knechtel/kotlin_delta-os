@@ -103,7 +103,7 @@ class MainActivity : AppCompatActivity() {
                 ) {
                     response?.body()?.let {
                         val notes: List<AparelhoDto> = it
-                        //configureList(notes)
+
                         notes.forEach {
 
                             var dbManager = DbManager(Session.context)
@@ -230,7 +230,7 @@ class MainActivity : AppCompatActivity() {
             }
             when (item.itemId) {
                 R.id.addRefresh -> {
-                    //Got to add paage
+                    println("Ola meu teste ---->1993")
                     var dbManager = DbManager(this)
                     var list = dbManager.LoadQueryClienteByIDServidorZero(0)
                     val call = RetrofitInitializer().noteService().addCliente(list).enqueue(
@@ -332,10 +332,13 @@ class MainActivity : AppCompatActivity() {
 
             myView.ivEdit.setOnClickListener(View.OnClickListener {
                 Session.Companion.idCliente = myVCliente.id?.toLong() ?: 199;
+                var dbManager= DbManager(Session.context)
                 var intent = Intent(this.context, MainAparelhoActivity::class.java)
                 // aqui tem um bug
                 Session.Companion.idLocalCadAparelho = myVCliente.id?.toInt() ?: 199;
                 Session.idLocalAparelhos = myVCliente.id?.toInt() ?: -1;
+                Session.uuidCliente =
+                    dbManager.LoadQueryClienteByIDLocal(myVCliente!!.id!!.toLong()).get(0).uuidCliente.toString()
                 startActivity(intent)
                 Toast.makeText(
                     this.context,

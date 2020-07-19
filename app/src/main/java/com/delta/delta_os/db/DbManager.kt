@@ -38,8 +38,8 @@ class DbManager {
     val dataSaida = "dataSaida"
     val devolucao = "devolucao"
     val valor = "valor"
-    val dbVersion = 88
-    val uuidCliente = "";
+    val dbVersion = 96
+    val uuidCliente = "uuidCliente";
 
     //CREATE TABLE IF NOT EXISTS MyNotes (ID INTEGER PRIMARY KEY,title TEXT, Description TEXT);"
     val sqlCreateTable =
@@ -83,7 +83,7 @@ class DbManager {
     inner class DatabaseHelperNotes : SQLiteOpenHelper {
         var context: Context? = null
 
-        constructor(context: Context) : super(context, dbName, null, 88) {
+        constructor(context: Context) : super(context, dbName, null, 96) {
             this.context = context
         }
 
@@ -119,6 +119,10 @@ class DbManager {
                     val telefone = cursor.getString(cursor.getColumnIndex("telefone"))
                     val email = cursor.getString(cursor.getColumnIndex("email"))
                     val idServidor = cursor.getInt(cursor.getColumnIndex("idServidor"))
+                    var uuidCliente = cursor.getString(cursor.getColumnIndex("uuidCliente"))
+                    if(uuidCliente==null)
+                        uuidCliente="VAZIO"
+
                     listCliente.add(
                         Cliente(
                             ID,
@@ -127,7 +131,45 @@ class DbManager {
                             endereco,
                             telefone,
                             email,
-                            idServidor
+                            idServidor,
+                            uuidCliente
+                        )
+                    )
+
+                } while (cursor.moveToNext())
+            }
+        }
+        cursor!!.close()
+        return listCliente;
+
+
+    }
+    fun LoadQueryByUuidCliente(uuid:String): ArrayList<Cliente> {
+        var listCliente = ArrayList<Cliente>()
+        val projections = arrayOf("ID", "nome", "cpf", "endereco", "telefone", "email")
+        val cursor = sqlDB?.rawQuery("select * from Cliente where uuidCliente ="+uuid, null)
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+
+                do {
+                    val ID = cursor.getInt(cursor.getColumnIndex("ID"))
+                    val nome = cursor.getString(cursor.getColumnIndex("nome"))
+                    val cpf = cursor.getString(cursor.getColumnIndex("cpf"))
+                    val endereco = cursor.getString(cursor.getColumnIndex("endereco"))
+                    val telefone = cursor.getString(cursor.getColumnIndex("telefone"))
+                    val email = cursor.getString(cursor.getColumnIndex("email"))
+                    val idServidor = cursor.getInt(cursor.getColumnIndex("idServidor"))
+                    val uuidCliente = cursor.getString(cursor.getColumnIndex("uuidCliente"))
+                    listCliente.add(
+                        Cliente(
+                            ID,
+                            nome,
+                            cpf,
+                            endereco,
+                            telefone,
+                            email,
+                            idServidor,uuidCliente
                         )
                     )
 
@@ -168,7 +210,13 @@ class DbManager {
 
                       val valor=cursor.getDouble(cursor.getColumnIndex("valor"))
                     val idServidor = cursor.getInt(cursor.getColumnIndex("idServidor"))
-                    val devolucao = cursor.getString(cursor.getColumnIndex("devolucao"))
+                    var devolucao = cursor.getString(cursor.getColumnIndex("devolucao"))
+                    var uuidCliente = cursor.getString(cursor.getColumnIndex("uuidCliente"))
+                    if(devolucao==null)
+                        devolucao="VAZIO"
+                    if(uuidCliente==null)
+                        uuidCliente="VAZIO"
+
                     listAparelho.add(
                         Aparelho(
                             ID,
@@ -185,7 +233,8 @@ class DbManager {
                             dataSaida,
                             valor ,
                             idServidor,
-                             devolucao
+                             devolucao,
+                            uuidCliente
                         )
                     )
 
@@ -225,6 +274,9 @@ class DbManager {
                     val valor=cursor.getDouble(cursor.getColumnIndex("valor"))
                     val idServidor = cursor.getInt(cursor.getColumnIndex("idServidor"))
                     val devolucao =  cursor.getString(cursor.getColumnIndex("devolucao"))
+                    var uuidCliente = cursor.getString(cursor.getColumnIndex("uuidCliente"))
+                    if(uuidCliente==null)
+                        uuidCliente="vazio"
                     listAparelho.add(
                         Aparelho(
                             ID,
@@ -241,7 +293,8 @@ class DbManager {
                             dataSaida,
                             valor,
                             idServidor,
-                            devolucao
+                            devolucao,
+                            uuidCliente
                         )
                     )
 
@@ -372,7 +425,8 @@ class DbManager {
                             endereco,
                             telefone,
                             email,
-                            idServidor
+                            idServidor,
+                            ""
                         )
                     )
 
@@ -401,6 +455,7 @@ class DbManager {
                     val telefone = cursor.getString(cursor.getColumnIndex("telefone"))
                     val email = cursor.getString(cursor.getColumnIndex("email"))
                     val idServidor = cursor.getInt(cursor.getColumnIndex("idServidor"))
+                    val uuidCliente = cursor.getString(cursor.getColumnIndex("uuidCliente"))
                     listCliente.add(
                         Cliente(
                             ID,
@@ -409,7 +464,8 @@ class DbManager {
                             endereco,
                             telefone,
                             email,
-                            idServidor
+                            idServidor,
+                            uuidCliente
                         )
                     )
 
@@ -637,6 +693,9 @@ class DbManager {
                     val telefone = cursor.getString(cursor.getColumnIndex("telefone"))
                     val email = cursor.getString(cursor.getColumnIndex("email"))
                     val idServidor = cursor.getInt(cursor.getColumnIndex("idServidor"))
+                    var uuidCliente = cursor.getString(cursor.getColumnIndex("uuidCliente"))
+                    if(uuidCliente==null)
+                        uuidCliente= "VAZIO"
                     listCliente.add(
                         Cliente(
                             ID,
@@ -645,7 +704,7 @@ class DbManager {
                             endereco,
                             telefone,
                             email,
-                            idServidor
+                            idServidor,uuidCliente
                         )
                     )
 
@@ -682,7 +741,7 @@ class DbManager {
                             endereco,
                             telefone,
                             email,
-                            idServidor
+                            idServidor,""
                         )
                     )
 
@@ -723,7 +782,16 @@ class DbManager {
                      val dataSaida=cursor.getString(cursor.getColumnIndex("dataSaida"))
                       val valor=cursor.getDouble(cursor.getColumnIndex("valor").toDouble().toInt())
                     val idServidor = cursor.getInt(cursor.getColumnIndex("idServidor"))
-                    val devolucao = cursor.getString(cursor.getColumnIndex("devolucao"))
+                    var devolucao = cursor.getString(cursor.getColumnIndex("devolucao"))
+                    var uuidCliente = cursor.getString(cursor.getColumnIndex("uuidCliente"))
+                    //remover isso
+                    if(devolucao==null) {
+                        devolucao = "NAO"
+                    }
+                    if(uuidCliente==null) {
+                        uuidCliente = "VAZIO"
+                    }
+
                     listAparelho.add(
                         Aparelho(
                             ID,
@@ -739,7 +807,74 @@ class DbManager {
                             dataEntrada, dataSaida,
                             valor,
                             idServidor,
-                            devolucao
+                            devolucao,
+                            uuidCliente
+                        )
+                    )
+
+                } while (cursor.moveToNext())
+            }
+        }
+        cursor!!.close()
+        return listAparelho;
+
+
+    }
+    fun LoadQueryAparelhoByIdClienteuuid(ID: String): ArrayList<Aparelho> {
+        println("olha Aquiii .....................................")
+        println(ID)
+        println("9876543210 12345")
+        println("--------------------------------------")
+        var listAparelho = ArrayList<Aparelho>()
+
+        val cursor =
+            sqlDB?.rawQuery("select * from Aparelho  where  uuidCliente = " +"'"+ ID+"'" + " ;", null);
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                var pronto = "";
+                do {
+                    val ID = cursor.getInt(cursor.getColumnIndex("id"))
+                    val nome = cursor.getString(cursor.getColumnIndex("nome"))
+                    val modelo = cursor.getString(cursor.getColumnIndex("modelo"))
+                    val serial = cursor.getString(cursor.getColumnIndex("serial"))
+                    pronto = "pronto";
+                    val idCliente = cursor.getInt(cursor.getColumnIndex("idCliente"))
+                    val autorizado =
+                        "autorizado"//cursor.getString(cursor.getColumnIndex("autorizado"))
+                    val garantia =
+                        "NAO_GARANTIA"//cursor.getString(cursor.getColumnIndex("garantia"))
+                    val entregue =
+                        cursor.getString(cursor.getColumnIndex("entregue"))
+                    val defeito_obs = cursor.getString(cursor.getColumnIndex("defeito_obs"))
+                    val dataEntrada =
+                        cursor.getString(cursor.getColumnIndex("dataEntrada"))
+                    val dataSaida=cursor.getString(cursor.getColumnIndex("dataSaida"))
+                    val valor=cursor.getDouble(cursor.getColumnIndex("valor").toDouble().toInt())
+                    val idServidor = cursor.getInt(cursor.getColumnIndex("idServidor"))
+                    var devolucao = cursor.getString(cursor.getColumnIndex("devolucao"))
+                    val uuidCliente = cursor.getString(cursor.getColumnIndex("uuidCliente"))
+                    //remover isso
+                    if(devolucao==null) {
+                        devolucao = "NAO"
+                    }
+                    listAparelho.add(
+                        Aparelho(
+                            ID,
+                            nome,
+                            modelo,
+                            serial,
+                            pronto,
+                            idCliente,
+                            autorizado,
+                            garantia,
+                            entregue,
+                            defeito_obs,
+                            dataEntrada, dataSaida,
+                            valor,
+                            idServidor,
+                            devolucao,
+                            uuidCliente
                         )
                     )
 
