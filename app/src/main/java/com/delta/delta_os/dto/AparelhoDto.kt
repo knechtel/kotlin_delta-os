@@ -25,6 +25,7 @@ class AparelhoDto {
     var dataSaida: String?=null;
     var valor:Double?=null;
     var devolucao:String?=null;
+    var uuidCliente:String?=null;
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun build(aparelho: Aparelho):AparelhoDto{
@@ -42,7 +43,8 @@ class AparelhoDto {
         aparelhoDto.dataEntrada = aparelho.dataEntrada
         aparelhoDto.dataSaida = aparelho.dataSaida
         aparelhoDto.valor = aparelho.valor
-        aparelhoDto.devolucao = aparelhoDto.devolucao
+        aparelhoDto.devolucao = aparelho.devolucao
+        aparelhoDto.uuidCliente = aparelho.uuidCliente
         return aparelhoDto
     }
 

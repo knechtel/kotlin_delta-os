@@ -38,7 +38,7 @@ class DbManager {
     val dataSaida = "dataSaida"
     val devolucao = "devolucao"
     val valor = "valor"
-    val dbVersion = 98
+    val dbVersion = 100
     val uuidCliente = "uuidCliente";
 
     //CREATE TABLE IF NOT EXISTS MyNotes (ID INTEGER PRIMARY KEY,title TEXT, Description TEXT);"
@@ -83,7 +83,7 @@ class DbManager {
     inner class DatabaseHelperNotes : SQLiteOpenHelper {
         var context: Context? = null
 
-        constructor(context: Context) : super(context, dbName, null, 98) {
+        constructor(context: Context) : super(context, dbName, null, 100) {
             this.context = context
         }
 
@@ -519,6 +519,8 @@ class DbManager {
                     val dataSaida = cursor.getString(cursor.getColumnIndex("dataSaida"))
                     val valor = cursor.getDouble(cursor.getColumnIndex("valor"))
                     val idServidor = cursor.getInt(cursor.getColumnIndex("idServidor"))
+                    var uuidCliente = cursor.getString(cursor.getColumnIndex("uuidCliente"))
+                    var devolucao = cursor.getString(cursor.getColumnIndex("devolucao"))
                     listAparelho.add(
                         Aparelho(
                             ID,
@@ -534,7 +536,9 @@ class DbManager {
                             dataEntrada,
                             dataSaida,
                             valor,
-                            idServidor
+                            idServidor,
+                            devolucao,
+                            uuidCliente
                         )
                     )
 
